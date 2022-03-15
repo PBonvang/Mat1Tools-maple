@@ -48,8 +48,30 @@ For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 ### vop
 
 ### slhs
+`slhs(X, type)`
+
+**Parameters:**
+- `X: List, vector, column matrix or similar`
+- `type: The type of the returned element. Standard is the same type as X`
+
+**Example:**
+```
+slhs(<x=0,y=10,z=15>)
+```
+For more examples see the [showcase](Procedure%20showcases/slhs.mw).
 
 ### srhs
+`srhs(X, type)`
+
+**Parameters:**
+- `X: List, vector, column matrix or similar`
+- `type: The type of the returned element. Standard is the same type as X`
+
+**Example:**
+```
+srhs(<x=0,y=10,z=15>)
+```
+For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 
 ### checkGradient
 
