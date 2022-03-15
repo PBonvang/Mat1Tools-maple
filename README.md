@@ -63,8 +63,11 @@ dot(x,y)
 ### slhs
 `slhs(X, type)`
 
+**Description**
+Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
+
 **Parameters:**
-- `X: List, vector, column matrix or similar`
+- `X: List, vector, column matrix, or similar`
 - `type: The type of the returned element. Standard is the same type as X`
 
 **Example:**
@@ -76,8 +79,11 @@ For more examples see the [showcase](Procedure%20showcases/slhs.mw).
 ### srhs
 `srhs(X, type)`
 
+**Description**
+Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
+
 **Parameters:**
-- `X: List, vector, column matrix or similar`
+- `X: List, vector, column matrix, or similar`
 - `type: The type of the returned element. Standard is the same type as X`
 
 **Example:**
@@ -87,6 +93,18 @@ srhs(<x=0,y=10,z=15>)
 For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 
 ### checkGradient
+`checkGradient(V)`
+
+**Description**
+Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
+
+**Parameters:**
+- `V: List, vector, or similar`
+
+**Example:**
+```
+checkGradient(<y*cos(x*y), z+x*cos(x*y), y>)
+```
 
 # Contribution
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Worksheet>
-<Version major="2021" minor="0"/>
+<Version major="2021" minor="2"/>
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
@@ -135,7 +135,7 @@ end proc:
 grad:=(X,Y)-&gt;convert(linalg[grad](X,Y),Vector[column]):
 
 srhs := proc(X, type:=whattype(X)) 
-description &quot;takes a list, vector, column matrix or similar containing only equations and returns the right hand side of the equations.
+description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
 I.e. srhs(&lt;x=0,y=10,z=15&gt;)
 &lt;0,10,15&gt;&quot;:
 local i, l:
@@ -144,8 +144,8 @@ return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
 end proc:
 
 slhs := proc(X, type:=whattype(X)) 
-description &quot;takes a list, vector, column matrix or similar containing only equations and returns the left hand side of the equations.
-I.e. srhs(&lt;x=0,y=10,z=15&gt;)
+description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
+I.e. slhs(&lt;x=0,y=10,z=15&gt;)
 &lt;x,y,z&gt;&quot;:
 local i, l:
 l := convert(X, list):
@@ -153,7 +153,7 @@ return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
 end proc:
 
 checkGradient := proc(V, $)
-description &quot;takes a vectorfield in 2 or 3 dimensions as a list, vector or similar and checks if it lives up to the mandatory criteria for being a gradient field
+description &quot;Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
 I.e. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;)
 Condition satisfied.&quot;:
 if numelems(V) &gt; 3 then
@@ -179,7 +179,11 @@ end proc:
 
 end module;</Text-field>
 </Input>
+<<<<<<< HEAD
 <Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNi1JJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjI2Mzc3NzY5OTI3MDRHRihJJXByaWtHNiRGJi9GM0kwX24yNjM3Nzc2OTkyNjcyR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjI2Mzc3NzY5OTI2NDBHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjYzNzc3Njk5MjYwOEdGKEkkdm9wRzYkRiYvRjNJMF9uMjYzNzc3Njk5MjU3NkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjI2Mzc3NzY2MDM4NDhHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjYzNzc3NjYwMzgwOEdGKEklZ3JhZEc2JEYmL0YzSTBfbjI2Mzc3NzY5OTI1NDRHRihJJXNyaHNHNiRGJi9GM0kwX24yNjM3Nzc2OTkyNTEyR0YoSSVzbGhzRzYkRiYvRjNJMF9uMjYzNzc3Njk5MjQ4MEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjI2Mzc3NzY2MDM3NjhHRihJMF9tMjYzNzc3Njk5MjczNkdGKEYoNyNGLg==</Equation></Text-field>
+=======
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNi1JJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjE1NTA1NTUzNzM0NzJHRihJJXByaWtHNiRGJi9GM0kwX24xNTUwNTU1MzczNDQwR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjE1NTA1NTUzNzM0MDhHRihJJmtyeWRzRzYkRiYvRjNJMF9uMTU1MDU1NTM3MzM3NkdGKEkkdm9wRzYkRiYvRjNJMF9uMTU1MDU1NTM3MzM0NEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjE1NTA1NTU0MzQxNTJHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMTU1MDU1NTQzNDExMkdGKEklZ3JhZEc2JEYmL0YzSTBfbjE1NTA1NTUzNzMzMTJHRihJJXNyaHNHNiRGJi9GM0kwX24xNTUwNTU1MzczMjgwR0YoSSVzbGhzRzYkRiYvRjNJMF9uMTU1MDU1NTM3MzI0OEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjE1NTA1NTU0MzQwNzJHRihJMF9tMTU1MDU1NTM3MzUwNEdGKEYoNyNGLg==</Equation></Text-field>
+>>>>>>> 5eb32e1e17b3a17d0bef96078b885aa1b4f8f8df
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
