@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Worksheet>
-<Version major="2021" minor="0"/>
+<Version major="2021" minor="2"/>
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
@@ -99,9 +99,7 @@ with(LinearAlgebra):
 with(plots):
 with(Integrator8):
 
-dot := proc(x::Vector,y::Vector) description &quot;Scalar product, dot product of two vectors; Takes two vectors and returns the dot product of them. I.e. 
-dot(&lt;a,b&gt;,&lt;c,d&gt;) 
-&gt; a*c + b*d&quot;:
+dot := proc(x::Vector,y::Vector) description &quot;Scalar product, dot product of two vectors; Takes two vectors and returns the dot product of them. dot(&lt;a,b&gt;,&lt;c,d&gt;) -&gt; a*c + b*d&quot;:
 VectorCalculus[DotProduct](x,y); 
 end proc:
 prik:= dot:
@@ -142,8 +140,7 @@ end proc:
 
 srhs := proc(X, type:=whattype(X)) 
 description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
-I.e. srhs(&lt;x=0,y=10,z=15&gt;)
-&gt; &lt;0,10,15&gt;&quot;:
+slhs([x=0,y=10,z=15]) -&gt; [0,10,15]&quot;:
 local i, l:
 l := convert(X, list):
 return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
@@ -151,8 +148,7 @@ end proc:
 
 slhs := proc(X, type:=whattype(X)) 
 description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
-I.e. slhs(&lt;x=0,y=10,z=15&gt;)
-&gt; &lt;x,y,z&gt;&quot;:
+slhs([x=0,y=10,z=15]) -&gt; [x,y,z]&quot;:
 local i, l:
 l := convert(X, list):
 return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
@@ -160,8 +156,7 @@ end proc:
 
 checkGradient := proc(V, $)
 description &quot;Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
-I.e. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;)
-&gt; Condition satisfied.&quot;:
+checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;) -&gt; Condition satisfied.&quot;:
 if numelems(V) &gt; 3 then
  return &quot;The vectorfield must have a dimension of at most 3.&quot;;
 elif numelems(V) &lt; 2 then
