@@ -21,6 +21,8 @@ and the [Procedures](#procedures) will be available to you.
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
+**Description:** Plots parametric equations.
+
 **Parameters:**
 - `r: function / parametric equation`
 - `intervals: list of ranges`
