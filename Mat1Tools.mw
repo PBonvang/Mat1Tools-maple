@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Worksheet>
-<Version major="2021" minor="0"/>
+<Version major="2021" minor="2"/>
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
@@ -93,11 +93,7 @@
 description &quot;Tools used in the DTU course 01005 - Advanced Engineering Mathematics 1&quot;;
 option package;
 export 
-<<<<<<< Updated upstream
-   dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad;
-=======
    dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad, srhs, slhs, checkGradient;
->>>>>>> Stashed changes
 
 with(LinearAlgebra):
 with(plots):
@@ -138,11 +134,6 @@ end proc:
 
 grad:=(X,Y)-&gt;convert(linalg[grad](X,Y),Vector[column]):
 
-<<<<<<< Updated upstream
-end module;</Text-field>
-</Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNipJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjE1Mzc3ODEwNjAyODhHRihJJXByaWtHNiRGJi9GM0kwX24xNTM3NzgxMDYwMjU2R0YoSSZjcm9zc0c2JEYmL0YzSTBfbjE1Mzc3ODEwNjAyMjRHRihJJmtyeWRzRzYkRiYvRjNJMF9uMTUzNzc4MTA2MDE5MkdGKEkkdm9wRzYkRiYvRjNJMF9uMTUzNzc4MTA2MDE2MEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjE1Mzc3ODMzMjcwMzJHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMTUzNzc4MzMyNjk5MkdGKEklZ3JhZEc2JEYmL0YzSTBfbjE1Mzc3ODEwNjAxMjhHRihJMF9tMTUzNzc4MTA2MDMyMEdGKEYoNyNGLg==</Equation></Text-field>
-=======
 srhs := proc(X, type:=whattype(X)) 
 description &quot;takes a list, vector, column matrix or similar containing only equations and returns the right hand side of the equations.
 I.e. srhs(&lt;x=0,y=10,z=15&gt;)
@@ -154,7 +145,7 @@ end proc:
 
 slhs := proc(X, type:=whattype(X)) 
 description &quot;takes a list, vector, column matrix or similar containing only equations and returns the left hand side of the equations.
-I.e. srhs(&lt;x=0,y=10,z=15&gt;)
+I.e. slhs(&lt;x=0,y=10,z=15&gt;)
 &lt;x,y,z&gt;&quot;:
 local i, l:
 l := convert(X, list):
@@ -189,7 +180,6 @@ end proc:
 end module;</Text-field>
 </Input>
 <Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNi1JJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjIwODMzMDkwNTc4MjRHRihJJXByaWtHNiRGJi9GM0kwX24yMDgzMzA5MDU3NzkyR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjIwODMzMDkwNTc3NjBHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjA4MzMwOTA1NzcyOEdGKEkkdm9wRzYkRiYvRjNJMF9uMjA4MzMwOTA1NzY5NkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjIwODMzMDg5NTczNjBHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjA4MzMwODk1NzMyMEdGKEklZ3JhZEc2JEYmL0YzSTBfbjIwODMzMDkwNTc2NjRHRihJJXNyaHNHNiRGJi9GM0kwX24yMDgzMzA5MDU3NjMyR0YoSSVzbGhzRzYkRiYvRjNJMF9uMjA4MzMwOTA1NzYwMEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjIwODMzMDg5NTcyODBHRihJMF9tMjA4MzMwOTA1Nzg1NkdGKEYoNyNGLg==</Equation></Text-field>
->>>>>>> Stashed changes
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
@@ -199,7 +189,7 @@ end module;</Text-field>
 <Group hide-input="false" labelreference="L2" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
 <Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">savepath := FileTools:-JoinPath([&quot;lib&quot;,packageName],base=mapledir); # cat(currentdir(),kernelopts(dirsep),packageName);</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEpc2F2ZXBhdGhGJy8lJ2l0YWxpY0dRJXRydWVGJy8lLG1hdGh2YXJpYW50R1EnaXRhbGljRictSSNtb0dGJDYtUSkmQXNzaWduO0YnL0YzUSdub3JtYWxGJy8lJmZlbmNlR1EmZmFsc2VGJy8lKnNlcGFyYXRvckdGPS8lKXN0cmV0Y2h5R0Y9LyUqc3ltbWV0cmljR0Y9LyUobGFyZ2VvcEdGPS8lLm1vdmFibGVsaW1pdHNHRj0vJSdhY2NlbnRHRj0vJSdsc3BhY2VHUSwwLjI3Nzc3NzhlbUYnLyUncnNwYWNlR0ZMLUkjbXNHRiQ2I1FORDpcUHJvZ3JhbX5GaWxlc1xNYXBsZX4yMDIxXGxpYlxNYXQxVG9vbHMubWxhRidGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSlzYXZlcGF0aEdGKFFORDpcUHJvZ3JhbX5GaWxlc1xNYXBsZX4yMDIxXGxpYlxNYXQxVG9vbHMubWxhRig3I0Yu</Equation></Text-field>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEpc2F2ZXBhdGhGJy8lJ2l0YWxpY0dRJXRydWVGJy8lLG1hdGh2YXJpYW50R1EnaXRhbGljRictSSNtb0dGJDYtUSkmQXNzaWduO0YnL0YzUSdub3JtYWxGJy8lJmZlbmNlR1EmZmFsc2VGJy8lKnNlcGFyYXRvckdGPS8lKXN0cmV0Y2h5R0Y9LyUqc3ltbWV0cmljR0Y9LyUobGFyZ2VvcEdGPS8lLm1vdmFibGVsaW1pdHNHRj0vJSdhY2NlbnRHRj0vJSdsc3BhY2VHUSwwLjI3Nzc3NzhlbUYnLyUncnNwYWNlR0ZMLUkjbXNHRiQ2I1FOQzpcUHJvZ3JhbX5GaWxlc1xNYXBsZX4yMDIxXGxpYlxNYXQxVG9vbHMubWxhRidGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSlzYXZlcGF0aEdGKFFOQzpcUHJvZ3JhbX5GaWxlc1xNYXBsZX4yMDIxXGxpYlxNYXQxVG9vbHMubWxhRig3I0Yu</Equation></Text-field>
 </Output>
 </Group>
 <Group labelreference="L3" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
