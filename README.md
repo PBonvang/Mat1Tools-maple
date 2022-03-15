@@ -73,6 +73,7 @@ Takes a list, vector, column matrix, or similar containing only equations and re
 **Example:**
 ```
 slhs(<x=0,y=10,z=15>)
+> <x, y, z>
 ```
 For more examples see the [showcase](Procedure%20showcases/slhs.mw).
 
@@ -89,6 +90,7 @@ Takes a list, vector, column matrix, or similar containing only equations and re
 **Example:**
 ```
 srhs(<x=0,y=10,z=15>)
+> <0, 10, 15>
 ```
 For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 
@@ -104,6 +106,7 @@ Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and chec
 **Example:**
 ```
 checkGradient(<y*cos(x*y), z+x*cos(x*y), y>)
+> "Condition satisfied."
 ```
 
 # Contribution
