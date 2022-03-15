@@ -53,7 +53,22 @@ dot(x,y)
 > ad + be + cf
 ```
 ### cross / kryds
+`cross(x, y)`
 
+**Parameters:**
+- `x: 3D Vector`
+- `y: 3D Vector`
+
+**Example:**
+```
+x := <a,b,c>;
+y := <d,e,f>;
+
+cross(x,y);
+> <b*f - c*e,
+   -a*f + c*d,
+   a*e - b*d>
+```
 ### intervalsolve
 
 ### grad
