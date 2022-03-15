@@ -165,10 +165,11 @@ Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and chec
 
 **Example:**
 ```
-checkGradient(<y*cos(x*y), z+x*cos(x*y), y>)
+checkGradient(<x, y>)
 > "Condition satisfied."
 ```
 
+For more examples see the [showcase](Procedure%20showcases/checkGradient.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
