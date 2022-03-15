@@ -88,6 +88,21 @@ intervalsolve(lign,x=0..4*Pi);
 > [Pi/2, (5*Pi)/2]
 ```
 ### grad
+`grad(f, vars)`
+
+**Description:** Computes the gradient of a function regarding the list of variables passed.
+
+**Parameters:**
+- `f: Procedure`
+- `vars: List of variable names`
+
+**Example:**
+```
+f := (x,y) -> x^2 + y^2;
+
+grad(f,[x,y]);
+> <1,1>
+```
 
 ### vop
 `vop(v)`
