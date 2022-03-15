@@ -38,7 +38,20 @@ paraplot(r,intervals,color="#FF0004")
 For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 
 ### dot / prik
+`dot(x, y)`
 
+**Parameters:**
+- `x: Vector`
+- `y: Vector`
+
+**Example:**
+```
+x := <a,b,c>;
+y := <d,e,f>;
+
+dot(x,y)
+> ad + be + cf
+```
 ### cross / kryds
 
 ### intervalsolve
