@@ -72,7 +72,21 @@ cross(x,y);
    a*e - b*d>
 ```
 ### intervalsolve
+`intervalsolve(equation, variable_range)`
 
+**Description:** Solves for solutions to the provided equation in the provided variable range.
+
+**Parameters:**
+- `equation: Equation`
+- `variable_range: Named range`
+
+**Example:**
+```
+lign := sin(x)= 1;
+
+intervalsolve(lign,x=0..4*Pi);
+> [Pi/2, (5*Pi)/2]
+```
 ### grad
 
 ### vop
