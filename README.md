@@ -1,7 +1,7 @@
 # Mat1Tools-maple
 Mat1Tools is a [Maple](https://www.maplesoft.com/products/maple/) library consisting of procedures used throughout the [Advanced Engineering Mathematics (01005) DTU course](https://01005.compute.dtu.dk/).
 
-Big thanks to [Jonathan Højlev](https://www.youtube.com/channel/UCJWO_AzFZuqXoBY14JEdDXg) for providing the foundation for this package through LaTex intro evenings and his [Template](assets/God_skabelon.mw)
+Big thanks to [Jonathan Højlev](https://www.youtube.com/channel/UCJWO_AzFZuqXoBY14JEdDXg) for providing the foundation for this package through LaTex intro evenings and his [Template](assets/God%20skabelon.mw)
 
 # Prerequisites
 - [Integrator8](https://steen-toft.dk/mat/maple/int8.htm)
