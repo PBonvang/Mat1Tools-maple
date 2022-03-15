@@ -65,6 +65,9 @@ y := <d,e,f>;
 dot(x,y)
 > ad + be + cf
 ```
+
+For more examples see the [showcase](Procedure%20showcases/dot.mw).
+
 ### cross / kryds
 `cross(x, y)`
 
@@ -82,6 +85,9 @@ cross(x,y);
    -a*f + c*d,
    a*e - b*d>
 ```
+
+For more examples see the [showcase](Procedure%20showcases/cross.mw).
+
 ### intervalsolve
 `intervalsolve(equation, variable_range)`
 
@@ -98,6 +104,9 @@ lign := sin(x)= 1;
 intervalsolve(lign,x=0..4*Pi);
 > [Pi/2, (5*Pi)/2]
 ```
+
+For more examples see the [showcase](Procedure%20showcases/intervalsolve.mw).
+
 ### grad
 `grad(f, vars)`
 
@@ -115,6 +124,8 @@ grad(f,[x,y]);
 > <1,1>
 ```
 
+For more examples see the [showcase](Procedure%20showcases/grad.mw).
+
 ### vop
 `vop(v)`
 
@@ -130,6 +141,8 @@ v := <a,b,c>;
 vop(v);
 > a,b,c
 ```
+
+For more examples see the [showcase](Procedure%20showcases/vop.mw).
 
 ### slhs
 `slhs(X, type)`
