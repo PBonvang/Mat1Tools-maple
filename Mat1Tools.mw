@@ -135,7 +135,7 @@ end proc:
 grad:=(X,Y)-&gt;convert(linalg[grad](X,Y),Vector[column]):
 
 srhs := proc(X, type:=whattype(X)) 
-description &quot;takes a list, vector, column matrix or similar containing only equations and returns the right hand side of the equations.
+description &quot;takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
 I.e. srhs(&lt;x=0,y=10,z=15&gt;)
 &lt;0,10,15&gt;&quot;:
 local i, l:
@@ -144,7 +144,7 @@ return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
 end proc:
 
 slhs := proc(X, type:=whattype(X)) 
-description &quot;takes a list, vector, column matrix or similar containing only equations and returns the left hand side of the equations.
+description &quot;takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
 I.e. slhs(&lt;x=0,y=10,z=15&gt;)
 &lt;x,y,z&gt;&quot;:
 local i, l:
@@ -153,7 +153,7 @@ return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
 end proc:
 
 checkGradient := proc(V, $)
-description &quot;takes a vectorfield in 2 or 3 dimensions as a list, vector or similar and checks if it lives up to the mandatory criteria for being a gradient field
+description &quot;takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field
 I.e. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;)
 Condition satisfied.&quot;:
 if numelems(V) &gt; 3 then
