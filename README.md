@@ -1,5 +1,5 @@
 # Mat1Tools-maple
-Mat1Tools is a [Maple](https://www.maplesoft.com/products/maple/) library consisting of procedures used throughout the [Advanced Engineering Mathematics (01005) DTU course](https://01005.compute.dtu.dk/).
+Mat1Tools is a [Maple](https://www.maplesoft.com/products/maple/) library consisting of procedures used throughout the [Advanced Engineering Mathematics 1 (01005) DTU course](https://01005.compute.dtu.dk/).
 
 Big thanks to [Jonathan Højlev](https://www.youtube.com/channel/UCJWO_AzFZuqXoBY14JEdDXg) for providing the foundation for this package through LaTex intro evenings and his [Template](assets/God%20skabelon.mw)
 
@@ -72,10 +72,38 @@ cross(x,y);
    a*e - b*d>
 ```
 ### intervalsolve
+`intervalsolve(equation, variable_range)`
 
+**Description:** Solves for solutions to the provided equation in the provided variable range.
+
+**Parameters:**
+- `equation: Equation`
+- `variable_range: Named range`
+
+**Example:**
+```
+lign := sin(x)= 1;
+
+intervalsolve(lign,x=0..4*Pi);
+> [Pi/2, (5*Pi)/2]
+```
 ### grad
 
 ### vop
+`vop(v)`
+
+**Description:** Extracts the elements of a vector.
+
+**Parameter:**
+- `v: Vector`
+
+**Example:**
+```
+v := <a,b,c>;
+
+vop(v);
+> a,b,c
+```
 
 ### slhs
 `slhs(X, type)`
