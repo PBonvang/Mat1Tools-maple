@@ -19,6 +19,23 @@ To import the package into a document or worksheet simply write: `with(Mat1Tools
 and the [Procedures](#procedures) will be available to you.
 ## Procedures
 ### paraplot
+`paraplot(r, intervals, plotOpts)`  
+
+**Parameters:**
+- `r: function / parametric equation`
+- `intervals: list of ranges`
+- `plotOpts: plot options`
+  - 2D list: https://www.maplesoft.com/support/help/Maple/view.aspx?path=plot%2foptions
+  - 3D list: https://www.maplesoft.com/support/help/Maple/view.aspx?path=plot3d%2foption
+
+**Example:**
+```
+r:=(u,v) -> <u,exp(-u/3)*sin(u)*v>;
+intervals := [0..2*Pi,0..1];
+paraplot(r,intervals,color="#FF0004")
+```
+
+For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 
 ### dot / prik
 
@@ -34,7 +51,8 @@ and the [Procedures](#procedures) will be available to you.
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
 2. Change/Add procedures
-3. Create pull request
-4. Wait for merge
+3. Add a show case to [Procedure showcases](Procedure%20showcases)
+4. Create pull request
+   1. Provide a proper description of the addition or modification, so that testers don't have to test everything (Wish Maple had unit tests).
 
 You'll of cause be able to use your own modification right away by replacing the existing *Mat1Tools.mla* file in your Maple lib folder (See [Installation](#installation))
