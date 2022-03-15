@@ -88,6 +88,21 @@ intervalsolve(lign,x=0..4*Pi);
 > [Pi/2, (5*Pi)/2]
 ```
 ### grad
+`grad(f, vars)`
+
+**Description:** Computes the gradient of a function regarding the list of variables passed.
+
+**Parameters:**
+- `f: Procedure`
+- `vars: List of variable names`
+
+**Example:**
+```
+f := (x,y) -> x^2 + y^2;
+
+grad(f,[x,y]);
+> <1,1>
+```
 
 ### vop
 `vop(v)`
@@ -150,10 +165,11 @@ Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and chec
 
 **Example:**
 ```
-checkGradient(<y*cos(x*y), z+x*cos(x*y), y>)
+checkGradient(<x, y>)
 > "Condition satisfied."
 ```
 
+For more examples see the [showcase](Procedure%20showcases/checkGradient.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
