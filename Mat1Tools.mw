@@ -93,7 +93,7 @@
 description &quot;Tools used in the DTU course 01005 - Advanced Engineering Mathematics 1&quot;;
 option package;
 export 
-   dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad;
+   dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad, srhs, slhs, checkGradient;
 
 with(LinearAlgebra):
 with(plots):
@@ -134,9 +134,52 @@ end proc:
 
 grad:=(X,Y)-&gt;convert(linalg[grad](X,Y),Vector[column]):
 
+srhs := proc(X, type:=whattype(X)) 
+description &quot;takes a list, vector, column matrix or similar containing only equations and returns the right hand side of the equations.
+I.e. srhs(&lt;x=0,y=10,z=15&gt;)
+&lt;0,10,15&gt;&quot;:
+local i, l:
+l := convert(X, list):
+return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
+end proc:
+
+slhs := proc(X, type:=whattype(X)) 
+description &quot;takes a list, vector, column matrix or similar containing only equations and returns the left hand side of the equations.
+I.e. srhs(&lt;x=0,y=10,z=15&gt;)
+&lt;x,y,z&gt;&quot;:
+local i, l:
+l := convert(X, list):
+return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
+end proc:
+
+checkGradient := proc(V, $)
+description &quot;takes a vectorfield in 2 or 3 dimensions as a list, vector or similar and checks if it lives up to the mandatory criteria for being a gradient field
+I.e. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;)
+Condition satisfied.&quot;:
+if numelems(V) &gt; 3 then
+ return &quot;The vectorfield must have a dimension of at most 3.&quot;;
+elif numelems(V) &lt; 2 then
+ return &quot;The vectorfield must have a dimension of at least 2.&quot;;
+elif numelems(V) = 2 then
+ if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) 
+  then print(&quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x))
+ else print(&quot;Condition satisfied.&quot;)
+ end if;
+else
+ if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) 
+  then print(&quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x))
+ elif simplify(diff(V[1],z)) &lt;&gt; simplify(diff(V[3],x)) 
+  then print(&quot;Not gradient field. &quot;, Diff(V__1,z) &lt;&gt; Diff(V__3,x))
+ elif simplify(diff(V[2],z)) &lt;&gt; simplify(diff(V[3],y)) 
+  then print(&quot;Not gradient field. &quot;, Diff(V__2,z) &lt;&gt; Diff(V__3,y))
+ else print(&quot;Condition satisfied.&quot;)
+ end if;
+end if;
+end proc:
+
 end module;</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNipJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjE1Mzc3ODEwNjAyODhHRihJJXByaWtHNiRGJi9GM0kwX24xNTM3NzgxMDYwMjU2R0YoSSZjcm9zc0c2JEYmL0YzSTBfbjE1Mzc3ODEwNjAyMjRHRihJJmtyeWRzRzYkRiYvRjNJMF9uMTUzNzc4MTA2MDE5MkdGKEkkdm9wRzYkRiYvRjNJMF9uMTUzNzc4MTA2MDE2MEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjE1Mzc3ODMzMjcwMzJHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMTUzNzc4MzMyNjk5MkdGKEklZ3JhZEc2JEYmL0YzSTBfbjE1Mzc3ODEwNjAxMjhHRihJMF9tMTUzNzc4MTA2MDMyMEdGKEYoNyNGLg==</Equation></Text-field>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNi1JJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjMyMjI1OTA0OTE0MjRHRihJJXByaWtHNiRGJi9GM0kwX24zMjIyNTkwNDkxMzkyR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjMyMjI1OTA0OTEzNjBHRihJJmtyeWRzRzYkRiYvRjNJMF9uMzIyMjU5MDQ5MTMyOEdGKEkkdm9wRzYkRiYvRjNJMF9uMzIyMjU5MDQ5MTI5NkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjMyMjI1OTA1NTI3MzZHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMzIyMjU5MDU1MjY5NkdGKEklZ3JhZEc2JEYmL0YzSTBfbjMyMjI1OTA0OTEyNjRHRihJJXNyaHNHNiRGJi9GM0kwX24zMjIyNTkwNDc4MzA0R0YoSSVzbGhzRzYkRiYvRjNJMF9uMzIyMjU5MDQ3ODMzNkdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjMyMjI1OTA1NTI2NTZHRihJMF9tMzIyMjU5MDQ5MTQ1NkdGKEYoNyNGLg==</Equation></Text-field>
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
@@ -151,6 +194,10 @@ end module;</Text-field>
 </Group>
 <Group labelreference="L3" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
 <Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">savelib('Mat1Tools',savepath);</Text-field>
+</Input>
+</Group>
+<Group labelreference="L5" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
 </Input>
 </Group>
 </Worksheet>
