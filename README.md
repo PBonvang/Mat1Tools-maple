@@ -47,6 +47,12 @@ For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 
 ### vop
 
+### slhs
+
+### srhs
+
+### checkGradient
+
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
