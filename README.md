@@ -18,6 +18,17 @@ Big thanks to [Jonathan Højlev](https://www.youtube.com/channel/UCJWO_AzFZuqXoB
 To import the package into a document or worksheet simply write: `with(Mat1Tools)`  
 and the [Procedures](#procedures) will be available to you.
 ## Procedures
+
+**Index:**
+ - [paraplot](#paraplot)
+ - [dot / prik](#dot--prik)
+ - [cross / kryds](#cross--kryds)
+ - [intervalsolve](#intervalsolve)
+ - [grad](#grad)
+ - [vop](#vop)
+ - [slhs](#slhs)
+ - [srhs](#srhs)
+ - [checkGradient](#checkgradient)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
