@@ -147,8 +147,7 @@ For more examples see the [showcase](Procedure%20showcases/vop.mw).
 ### slhs
 `slhs(X, type)`
 
-**Description**
-Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
+**Description:** Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
 
 **Parameters:**
 - `X: List, vector, column matrix, or similar`
@@ -164,8 +163,7 @@ For more examples see the [showcase](Procedure%20showcases/slhs.mw).
 ### srhs
 `srhs(X, type)`
 
-**Description**
-Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
+**Description:** Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
 
 **Parameters:**
 - `X: List, vector, column matrix, or similar`
@@ -181,8 +179,7 @@ For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 ### checkGradient
 `checkGradient(V)`
 
-**Description**
-Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
+**Description:** Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
 
 **Parameters:**
 - `V: List, vector, or similar`
