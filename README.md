@@ -30,6 +30,8 @@ and the [Procedures](#procedures) will be available to you.
  - [srhs](#srhs)
  - [checkGradient](#checkgradient)
  - [vlen](#vlen)
+ - [div](#div)
+ - [jacobi](#jacobi)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -225,6 +227,27 @@ V := unapply(<z*x,y,y^2>,[x,y,z]):
 div(V);
 > (x,y,z) -> z + 1
 ```
+
+For more examples see the [showcase](Procedure%20showcases/div.mw).
+
+### jacobi
+`jacobi(r)`
+
+**Description:** Computes the jacobi function of a parametric equation variable of up to 3 variables.
+
+**Parameter:**
+- `r: parametric equation (Procedure/Function)`
+
+**Example:**
+```
+r := unapply(<6*cos(u),6*sin(u),u>,u):
+r(u);
+
+jacobi(r);
+> sqrt(37)
+```
+
+For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
