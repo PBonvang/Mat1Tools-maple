@@ -195,12 +195,18 @@ end proc:
 jacobi := proc(r::{procedure}) description &quot;Computes the jacobi function of a parametric equation variable of up to 3 variables&quot;:
     local i, var;
     var := op(1, eval(r));
+    
+    if LinearAlgebra[ColumnDimension](r(var)) = 1 and type(r(var), Matrix)  then
+        r := unapply(convert(r(var),Vector),var):
+    end if;
+
+
     if numelems([var]) = 1 then
         simplify(vlen(diff(r(var), var))) assuming var::real;
     elif numelems([var]) = 2 and numelems(r(var)) = 2 then
         simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real;
     elif numelems([var]) = 2 then
-        simplify(vlen(kryds(diff(r(var), var[1]), diff(r(var), var[2])))) assuming var[1]::real, var[2]::real;
+        simplify(vlen(cross(diff(r(var), var[1]), diff(r(var), var[2])))) assuming var[1]::real, var[2]::real;
     elif numelems([var]) = 3 then
         simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real, var[3]::real;
     else
@@ -229,7 +235,7 @@ end proc:
 
 end module;</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjJJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjIwMzI4NzY0NDk4NTZHRihJJXByaWtHNiRGJi9GM0kwX24yMDMyODc2NDQ5ODI0R0YoSSZjcm9zc0c2JEYmL0YzSTBfbjIwMzI4NzY0NDk3OTJHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjAzMjg3NjQ1Nzg4OEdGKEkkdm9wRzYkRiYvRjNJMF9uMjAzMjg3NjQ1NzgyNEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjIwMzI4ODYyMzQyODBHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjAzMjg4NjIzNDI0MEdGKEklZ3JhZEc2JEYmL0YzSTBfbjIwMzI4NzY0NTc3NjBHRihJJXNyaHNHNiRGJi9GM0kwX24yMDMyODc2NDU3Njk2R0YoSSVzbGhzRzYkRiYvRjNJMF9uMjAzMjg3NjQ1NzY2NEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjIwMzI4ODYyMzQyMDBHRihJJXZsZW5HNiRGJi9GM0kwX24yMDMyODc2NDU3NjMyR0YoSSRkaXZHNiRGJi9GM0kwX24yMDMyODc2NDU3NjAwR0YoSSdqYWNvYmlHNiRGJi9GM0kwX24yMDMyODc2NDU3NTY4R0YoSSZ2ZnJvdEc2JEYmL0YzSTBfbjIwMzI4NzY0NTc1MzZHRihJJXBpbnRHNiRGJi9GM0kwX24yMDMyODc2NDU3NTA0R0YoSTBfbTIwMzI4NzY0NDk4ODhHRihGKDcjRi4=</Equation></Text-field>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjJJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjIwMzI4Njg3MTgwODBHRihJJXByaWtHNiRGJi9GM0kwX24yMDMyODY4NzE4MDQ4R0YoSSZjcm9zc0c2JEYmL0YzSTBfbjIwMzI4Njg3MTgwMTZHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjAzMjg2ODcxNzk4NEdGKEkkdm9wRzYkRiYvRjNJMF9uMjAzMjg2ODcxNzk1MkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjIwMzI4Nzk0OTk3MzZHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjAzMjg3OTQ5OTQ5NkdGKEklZ3JhZEc2JEYmL0YzSTBfbjIwMzI4Njg3MTc5MjBHRihJJXNyaHNHNiRGJi9GM0kwX24yMDMyODY4NzE3ODg4R0YoSSVzbGhzRzYkRiYvRjNJMF9uMjAzMjg2ODcxNzg1NkdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjIwMzI4Nzk0OTk0NTZHRihJJXZsZW5HNiRGJi9GM0kwX24yMDMyODY4NzE3ODI0R0YoSSRkaXZHNiRGJi9GM0kwX24yMDMyODY4NzE3NzkyR0YoSSdqYWNvYmlHNiRGJi9GM0kwX24yMDMyODY4NzE3NzYwR0YoSSZ2ZnJvdEc2JEYmL0YzSTBfbjIwMzI4Njg3MTc3MjhHRihJJXBpbnRHNiRGJi9GM0kwX24yMDMyODY4NzE3Njk2R0YoSTBfbTIwMzI4Njg3MTgxMTJHRihGKDcjRi4=</Equation></Text-field>
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
