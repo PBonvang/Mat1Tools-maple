@@ -32,6 +32,7 @@ and the [Procedures](#procedures) will be available to you.
  - [vlen](#vlen)
  - [div](#div)
  - [jacobi](#jacobi)
+ - [vfrot](#vfrot)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -248,6 +249,24 @@ jacobi(r);
 ```
 
 For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
+
+### vfrot
+`vfrot(V)`
+
+**Description:** Creates a rotation procedure/function for the given vector field.
+
+**Parameter:**
+- `V: Vector field (Procedure/Function)`
+
+**Example:**
+```
+V := unapply(<z*x,y,y^2>,[x,y,z]):
+
+vfrot(V);
+> (x,y,z) -> <2*y, x, 0>
+```
+
+For more examples see the [showcase](Procedure%20showcases/vfrot.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
