@@ -29,6 +29,7 @@ and the [Procedures](#procedures) will be available to you.
  - [slhs](#slhs)
  - [srhs](#srhs)
  - [checkGradient](#checkgradient)
+ - [vlen](#vlen)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -191,6 +192,23 @@ checkGradient(<x, y>)
 ```
 
 For more examples see the [showcase](Procedure%20showcases/checkGradient.mw).
+
+### vlen
+`vlen(v)`
+
+**Description:** Computes the length of the passed vector.
+
+**Parameters:**
+- `v: Vector`
+
+**Example:**
+```
+v := <x,y>:
+vlen(v);
+> sqrt(x^2 + y^2)
+```
+
+For more examples see the [showcase](Procedure%20showcases/vlen.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
