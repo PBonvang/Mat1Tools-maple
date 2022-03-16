@@ -32,7 +32,7 @@ and the [Procedures](#procedures) will be available to you.
  - [vlen](#vlen)
  - [div](#div)
  - [jacobi](#jacobi)
- - [vfrot](#vfrot)
+ - [curl](#curl)
  - [pint](#pint)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
@@ -251,10 +251,10 @@ jacobi(r);
 
 For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
 
-### vfrot
-`vfrot(V)`
+### curl
+`curl(V)`
 
-**Description:** Vector field rotation (vfrot) creates a rotation procedure/function for the given vector field.
+**Description:** Creates a rotation procedure/function for the given vector field.
 
 **Parameter:**
 - `V: Vector field (Procedure/Function)`
@@ -263,11 +263,11 @@ For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
 ```
 V := unapply(<z*x,y,y^2>,[x,y,z]):
 
-vfrot(V);
+curl(V);
 > (x,y,z) -> <2*y, x, 0>
 ```
 
-For more examples see the [showcase](Procedure%20showcases/vfrot.mw).
+For more examples see the [showcase](Procedure%20showcases/curl.mw).
 
 ### pint
 `pint(r,intervals,f=1)`
