@@ -34,6 +34,7 @@ and the [Procedures](#procedures) will be available to you.
  - [jacobi](#jacobi)
  - [curl](#curl)
  - [pint](#pint)
+ - [flux](#flux)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
