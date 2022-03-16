@@ -33,6 +33,7 @@ and the [Procedures](#procedures) will be available to you.
  - [div](#div)
  - [jacobi](#jacobi)
  - [vfrot](#vfrot)
+ - [pint](#pint)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -267,6 +268,34 @@ vfrot(V);
 ```
 
 For more examples see the [showcase](Procedure%20showcases/vfrot.mw).
+
+### pint
+`pint(r,intervals,f=1)`
+
+**Description:** Parametric equation integration (`pint`) integrates the parametric equation given in the given intervals, optionally with the provided weight function.
+
+**Parameters:**
+- `r: Parametric equation (Procedure/Function)`
+- `intervals: List of ranges`
+- `f: Weight function (Procedure/Function). Default = 1`
+
+**Example:**
+```
+r := unapply(<u*cos(v),u*sin(v),u^2>,[u,v]):
+r(u,v);
+intervals := [0..2,0..Pi/2];
+
+pint(r,intervals);
+> (17*Pi*sqrt(17))/24 - Pi/24
+
+# With weight function
+f:=(x,y,z)->z^2;
+
+pint(r,intervals,f);
+> (7769*Pi*sqrt(17))/1680 - Pi/1680
+```
+
+For more examples see the [showcase](Procedure%20showcases/pint.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
