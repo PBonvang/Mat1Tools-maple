@@ -209,6 +209,22 @@ vlen(v);
 ```
 
 For more examples see the [showcase](Procedure%20showcases/vlen.mw).
+
+### div
+`div(V)`
+
+**Description:** Creates a procedure/function for the divergence of the passed vector field.
+
+**Parameter:**
+- `V: Vector field procedure`
+
+**Example:**
+```
+V := unapply(<z*x,y,y^2>,[x,y,z]):
+
+div(V);
+> (x,y,z) -> z + 1
+```
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
