@@ -328,6 +328,6 @@ For more examples see the [showcase](Procedure%20showcases/flux.mw).
 2. Change/Add procedures
 3. Add a show case to [Procedure showcases](Procedure%20showcases)
 4. Create pull request
-   1. Provide a proper description of the addition or modification, so that testers don't have to test everything (Wish Maple had unit tests).
+   1. Provide a proper description of the addition or modification, so that testers don't have to test everything (Unit tests pending).
 
 You'll of cause be able to use your own modification right away by replacing the existing *Mat1Tools.mla* file in your Maple lib folder (See [Installation](#installation))
