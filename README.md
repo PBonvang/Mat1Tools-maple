@@ -296,6 +296,31 @@ pint(r,intervals,f);
 ```
 
 For more examples see the [showcase](Procedure%20showcases/pint.mw).
+
+### flux
+`flux(V, r, intervals)`
+
+**Description:** Computes the flux of the provided **3D** vector field throughout the provided 2 variable parametric equation in the given intervals.
+
+**Parameters:**
+- `V: Vector field (Procedure/Function)`
+- `r: Parametric equation (Procedure/Function)`
+- `intervals: List of ranges`
+
+**Example:**
+```
+V := unapply(<z*x,y,y^2>,[x,y,z]):
+V(x,y,z);
+
+r := unapply(<u*cos(v),u*sin(v),u^2>,[u,v]):
+r(u,v);
+intervals := [0..2,0..Pi/2];
+
+flux(V,r,intervals);
+> -(19*Pi)/3
+```
+
+For more examples see the [showcase](Procedure%20showcases/flux.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
