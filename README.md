@@ -56,7 +56,7 @@ paraplot(r,intervals,color="#FF0004")
 For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 
 ### dot / prik
-`dot(x, y)`
+`dot(x, y) / prik(x,y)`
 
 **Parameters:**
 - `x: Vector`
@@ -74,7 +74,7 @@ dot(x,y)
 For more examples see the [showcase](Procedure%20showcases/dot.mw).
 
 ### cross / kryds
-`cross(x, y)`
+`cross(x, y) / kryds(x, y)`
 
 **Parameters:**
 - `x: 3D Vector`
@@ -134,7 +134,7 @@ For more examples see the [showcase](Procedure%20showcases/grad.mw).
 ### vop
 `vop(v)`
 
-**Description:** Extracts the elements of a vector.
+**Description:** Vector operands (vop) extracts the elements of a vector.
 
 **Parameter:**
 - `v: Vector`
@@ -152,7 +152,7 @@ For more examples see the [showcase](Procedure%20showcases/vop.mw).
 ### slhs
 `slhs(X, type)`
 
-**Description:** Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
+**Description:** Sequential left hand side (slhs) takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
 
 **Parameters:**
 - `X: List, vector, column matrix, or similar`
@@ -168,7 +168,7 @@ For more examples see the [showcase](Procedure%20showcases/slhs.mw).
 ### srhs
 `srhs(X, type)`
 
-**Description:** Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
+**Description:** Sequential right hand side (srhs) takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
 
 **Parameters:**
 - `X: List, vector, column matrix, or similar`
@@ -200,7 +200,7 @@ For more examples see the [showcase](Procedure%20showcases/checkGradient.mw).
 ### vlen
 `vlen(v)`
 
-**Description:** Computes the length of the passed vector.
+**Description:** Vector length (vlen) computes the length of the passed vector.
 
 **Parameters:**
 - `v: Vector`
@@ -254,7 +254,7 @@ For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
 ### vfrot
 `vfrot(V)`
 
-**Description:** Creates a rotation procedure/function for the given vector field.
+**Description:** Vector field rotation (vfrot) creates a rotation procedure/function for the given vector field.
 
 **Parameter:**
 - `V: Vector field (Procedure/Function)`
