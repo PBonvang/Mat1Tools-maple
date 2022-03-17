@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Worksheet>
-<Version major="2021" minor="0"/>
+<Version major="2021" minor="2"/>
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
@@ -95,96 +95,144 @@ option package;
 export 
    dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad, srhs, slhs, checkGradient, vlen, div, jacobi, curl, pint, flux;
 
+local columnMatrixToVector;
+
 with(LinearAlgebra):
 with(plots):
 with(Integrator8):
 
-dot := proc(x::Vector,y::Vector) description &quot;Scalar product, dot product of two vectors; Takes two vectors and returns the dot product of them. dot(&lt;a,b&gt;,&lt;c,d&gt;) -&gt; a*c + b*d&quot;:
-VectorCalculus[DotProduct](x,y); 
+
+columnMatrixToVector := proc(X)
+    if LinearAlgebra[ColumnDimension](X) = 1 and type(X, Matrix)  then
+        return convert(X,Vector):
+    else
+        return X:
+    end if;
+end proc:
+
+
+dot := proc(x::Vector,y::Vector) 
+    description &quot;Scalar product, dot product of two vectors; Takes two vectors and returns the dot product of them. dot(&lt;a,b&gt;,&lt;c,d&gt;)      -&gt; a*c + b*d&quot;:
+
+    return VectorCalculus[DotProduct](columnMatrixToVector(x),columnMatrixToVector(y)); 
 end proc:
 prik:= dot:
 
-cross := proc(x::Vector, y::Vector) description &quot;Cartesian product, cross product of two vectors. Takes two 3 dimensional vectors and returns the cross product/normal vector of them. cross(&lt;a,b,c&gt;,&lt;d,e,f&gt;) -&gt; &lt;b*f - c*e, -a*f + c*d, a*e - b*d]&gt;&quot;:
-    convert(VectorCalculus[CrossProduct](x,y),Vector);
+
+cross := proc(x::Vector, y::Vector) 
+    description &quot;Cartesian product, cross product of two vectors. Takes two 3 dimensional vectors and returns the cross        
+    product/normal vector of them. cross(&lt;a,b,c&gt;,&lt;d,e,f&gt;) -&gt; &lt;b*f - c*e, -a*f + c*d, a*e - b*d]&gt;&quot;:
+
+    return convert(VectorCalculus[CrossProduct](columnMatrixToVector(x),columnMatrixToVector(y)),Vector);
 end proc:
 kryds := cross:
 
-vlen := proc(v::Vector) description &quot;Computes the length of the given vector. I.e. vlen(&lt;x,y&gt;) -&gt; sqrt(x^2 + y^2)&quot;:
-    sqrt(dot(v, v));
+
+vlen := proc(v::Vector) 
+    description &quot;Computes the length of the given vector. I.e. vlen(&lt;x,y&gt;) -&gt; sqrt(x^2 + y^2)&quot;:
+
+    return sqrt(dot(v, v));
 end proc:
 
-vop := proc(v) description &quot;Extract operands from a vector expression. I.e. vop(&lt;1,2,3&gt;) -&gt; 1,2,3&quot;;
-    op(convert(v,list));
+
+vop := proc(v) 
+    description &quot;Extract operands from a vector expression. I.e. vop(&lt;1,2,3&gt;) -&gt; 1,2,3&quot;;
+
+    return op(convert(v,list));
 end proc:
+
 
 intervalsolve := Student[Calculus1][Roots]:
 
-paraplot := proc(r::{procedure},range::{list(range)}) description &quot;Parametric plot (paraplot) is a function which plots parametric equations. Takes the parametric equation and a list of ranges for the variables in the parametric equation.&quot;: 
-local var,i; var:=op(1,eval(r)):
-if (numelems(range)=1) then
-   if (numelems(r(var))=2) then
-      plot([vop(r(var)),var=range[1]],_rest); # Kurve i 2D
-   else
-      plot3d(r(var),var=range[1],_rest) # Kurve i 3D
-   end if:
-elif (numelems(range)=2) then
-   if (numelems(r(var))=2) then
-      plot3d(&lt;r(var),0&gt;,var[1]=range[1],var[2]=range[2],orientation=[-90,0],lightmodel=none,_rest); # Plan i 2D
-   else
-      plot3d(r(var),var[1]=range[1],var[2]=range[2],_rest); # Flade i 3D
-   end if:
-elif (numelems([var])=3) then
-   plots[display](Integrator8[sideFlader](r,[seq(vop(convert(range[i],list)),i=1..3)],[8,8,8]),_rest);
-end if;
+
+paraplot := proc(r::{procedure},range::{list(range)}) 
+    description &quot;Parametric plot (paraplot) is a function which plots parametric equations. Takes the parametric equation and a list      of ranges for the variables in the parametric equation.&quot;: 
+
+    local var,i; var:=op(1,eval(r)):
+    if (numelems(range)=1) then
+        if (numelems(r(var))=2) then
+            return plot([vop(r(var)),var=range[1]],_rest); # Kurve i 2D
+        else
+            return plot3d(r(var),var=range[1],_rest) # Kurve i 3D
+        end if:
+
+    elif (numelems(range)=2) then
+        if (numelems(r(var))=2) then
+            return plot3d(&lt;r(var),0&gt;,var[1]=range[1],var[2]=range[2],orientation=[-90,0],lightmodel=none,_rest); # Plan i 2D
+        else
+            return plot3d(r(var),var[1]=range[1],var[2]=range[2],_rest); # Flade i 3D
+        end if:
+
+    elif (numelems([var])=3) then
+        return plots[display](Integrator8[sideFlader](r,[seq(vop(convert(range[i],list)),i=1..3)],[8,8,8]),_rest);
+    end if;
 end proc:
 
-grad:= proc(f::{procedure},x::{list}) description &quot;Computes the gradient of the given function, with regard to the passed variables. I.e. grad(unapply(x+y,x,y),[x,y]) -&gt; &lt;1,1&gt;.&quot;:
-    convert(VectorCalculus[Gradient](f(vop(x)),x),Vector[column]);
+
+grad:= proc(f::{procedure},x::{list}) 
+    description &quot;Computes the gradient of the given function, with regard to the passed variables. I.e. grad(unapply(x+y,x,y),[x,y])      -&gt; &lt;1,1&gt;.&quot;:
+    return convert(VectorCalculus[Gradient](f(vop(x)),x),Vector[column]);
 end proc:
+
 
 srhs := proc(X, type:=whattype(X)) 
-description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the equations.
-slhs([x=0,y=10,z=15]) -&gt; [0,10,15]&quot;:
-local i, l:
-l := convert(X, list):
-return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
+    description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the         equations. slhs([x=0,y=10,z=15]) -&gt; [0,10,15]&quot;:
+
+    local i, l:
+    l := convert(X, list):
+    return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
 end proc:
+
 
 slhs := proc(X, type:=whattype(X)) 
-description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the equations.
-slhs([x=0,y=10,z=15]) -&gt; [x,y,z]&quot;:
-local i, l:
-l := convert(X, list):
-return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
+    description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the          equations. slhs([x=0,y=10,z=15]) -&gt; [x,y,z]&quot;:
+
+    local i, l:
+    l := convert(X, list):
+    return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
 end proc:
+
 
 checkGradient := proc(V, $)
-description &quot;Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
-checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;) -&gt; Condition satisfied.&quot;:
-if numelems(V) &gt; 3 then
- return &quot;The vectorfield must have a dimension of at most 3.&quot;;
-elif numelems(V) &lt; 2 then
- return &quot;The vectorfield must have a dimension of at least 2.&quot;;
-elif numelems(V) = 2 then
- if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) 
-  then print(&quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x))
- else print(&quot;Condition satisfied.&quot;)
- end if;
-else
- if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) 
-  then print(&quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x))
- elif simplify(diff(V[1],z)) &lt;&gt; simplify(diff(V[3],x)) 
-  then print(&quot;Not gradient field. &quot;, Diff(V__1,z) &lt;&gt; Diff(V__3,x))
- elif simplify(diff(V[2],z)) &lt;&gt; simplify(diff(V[3],y)) 
-  then print(&quot;Not gradient field. &quot;, Diff(V__2,z) &lt;&gt; Diff(V__3,y))
- else print(&quot;Condition satisfied.&quot;)
- end if;
-end if;
+    description &quot;Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory       criteria for being a gradient field. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;) -&gt; Condition satisfied.&quot;:
+
+    if numelems(V) &gt; 3 then
+        return &quot;The vectorfield must have a dimension of at most 3.&quot;;
+
+    elif numelems(V) &lt; 2 then
+        return &quot;The vectorfield must have a dimension of at least 2.&quot;;
+
+    elif numelems(V) = 2 then
+        if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) then 
+            return &quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x)
+        else 
+            return &quot;Condition satisfied.&quot;
+        end if;
+
+    else
+        if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) then 
+            return &quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x)
+        elif simplify(diff(V[1],z)) &lt;&gt; simplify(diff(V[3],x)) then 
+            return &quot;Not gradient field. &quot;, Diff(V__1,z) &lt;&gt; Diff(V__3,x)
+        elif simplify(diff(V[2],z)) &lt;&gt; simplify(diff(V[3],y)) then 
+            return &quot;Not gradient field. &quot;, Diff(V__2,z) &lt;&gt; Diff(V__3,y)
+        else 
+            return &quot;Condition satisfied.&quot;
+        end if;
+    end if;
 end proc:
 
-div := proc(V::{Vector, procedure}) description &quot;Creates a procedure/function for the divergence of the passed vector field.&quot;:
+
+div := proc(V::{Vector, procedure}) 
+    description &quot;Creates a procedure/function for the divergence of the passed vector field.&quot;:
+
     local v;
-    if type(V, procedure) then v := V(op(1, eval(V))); else v := V; end if;
+    if type(V, procedure) then 
+        v := V(op(1, eval(V))); 
+    else 
+        v := V; 
+    end if;
+
     if numelems(v) = 2 then
         unapply(VectorCalculus[Divergence](Student[VectorCalculus][VectorField](v)), [x, y]);
     else
@@ -192,56 +240,63 @@ div := proc(V::{Vector, procedure}) description &quot;Creates a procedure/functi
     end if;
 end proc:
 
-jacobi := proc(r::{procedure}) description &quot;Computes the jacobi function of a parametric equation variable of up to 3 variables&quot;:
+jacobi := proc(r::{procedure}) 
+    description &quot;Computes the jacobi function of a parametric equation variable of up to 3 variables&quot;:
+    
     local i, var;
     var := op(1, eval(r));
-    
-    if LinearAlgebra[ColumnDimension](r(var)) = 1 and type(r(var), Matrix)  then
-        r := unapply(convert(r(var),Vector),var):
-    end if;
-
+    r := unapply(columnMatrixToVector(r(var)),var):
 
     if numelems([var]) = 1 then
-        simplify(vlen(diff(r(var), var))) assuming var::real;
+        return simplify(vlen(diff(r(var), var))) assuming var::real;
     elif numelems([var]) = 2 and numelems(r(var)) = 2 then
-        simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real;
+        return simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real;
     elif numelems([var]) = 2 then
-        simplify(vlen(cross(diff(r(var), var[1]), diff(r(var), var[2])))) assuming var[1]::real, var[2]::real;
+        return simplify(vlen(cross(diff(r(var), var[1]), diff(r(var), var[2])))) assuming var[1]::real, var[2]::real;
     elif numelems([var]) = 3 then
-        simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real, var[3]::real;
+        return simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real, var[3]::real;
     else
-        &quot;Incorrect number of dimensions&quot;;
+        return &quot;Incorrect number of dimensions&quot;;
     end if;
 end proc:
 
-curl := proc(V::{Vector, procedure}) description &quot;Creates a rotation procedure/function for the given vector field.&quot;:
+
+curl := proc(V::{Vector, procedure}) 
+    description &quot;Creates a rotation procedure/function for the given vector field.&quot;:
+
     local v, var;
     VectorCalculus:-BasisFormat(false);
     if type(V, procedure) then
         v := V(op(1, VectorCalculus:-eval(V)));
         var := [op(1, VectorCalculus:-eval(V))];
-        unapply(VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v)), var);
+        return unapply(VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v)), var);
     else
         v := V;
-        VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v));
+        return VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v));
     end if;
 end proc:
 
-pint := proc(r::{procedure}, integrateRange::{list(range)}, f::{procedure} := 1) description &quot;Paramatric equation integration (pint) integrates the parametric equation given in the given intervals, optionally with the provided weight function.&quot;:
+
+pint := proc(r::{procedure}, integrateRange::{list(range)}, f::{procedure} := 1) 
+    description &quot;Paramatric equation integration (pint) integrates the parametric equation given in the given intervals, optionally       with the provided weight function.&quot;:
+
     local var, i;
     var := [op(1, eval(r))];
-    simplify(int(f(vop(r(vop(var))))*jacobi(r), seq(var[i] = integrateRange[i], i = 1 .. numelems(integrateRange))));
+    return simplify(int(f(vop(r(vop(var))))*jacobi(r), seq(var[i] = integrateRange[i], i = 1 .. numelems(integrateRange))));
 end proc:
 
-flux:= proc(V::{procedure}, r::{procedure}, integrateRange::{list(range)}) description &quot;Computes the flux of the provided 3D vector field throughout the provided 2 variable parametric equation in the given intervals.&quot;:
+
+flux:= proc(V::{procedure}, r::{procedure}, integrateRange::{list(range)}) 
+    description &quot;Computes the flux of the provided 3D vector field throughout the provided 2 variable parametric equation in the          given intervals.&quot;:
     local var, i;
     var := [op(1, eval(r))];
     int(dot(convert(V(vop(r(vop(var)))), Vector), LinearAlgebra[CrossProduct](diff(r(vop(var)), var[1]), diff(r(vop(var)), var[2]))), var[1]=integrateRange[1], var[2]=integrateRange[2]);
 end proc:
 
+
 end module;</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjNJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjIwMDk5ODYxODY0NjRHRihJJXByaWtHNiRGJi9GM0kwX24yMDA5OTg2MTg2NDMyR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjIwMDk5ODYxODY0MDBHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjAwOTk4NjE4NjM2OEdGKEkkdm9wRzYkRiYvRjNJMF9uMjAwOTk4NjE4NjMzNkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjIwMDk5ODY1ODI3NjBHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjAwOTk4NjU4MjcyMEdGKEklZ3JhZEc2JEYmL0YzSTBfbjIwMDk5ODYxODYzMDRHRihJJXNyaHNHNiRGJi9GM0kwX24yMDA5OTg2MTg2MjcyR0YoSSVzbGhzRzYkRiYvRjNJMF9uMjAwOTk4NjE4NjI0MEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjIwMDk5ODY1ODI2ODBHRihJJXZsZW5HNiRGJi9GM0kwX24yMDA5OTg2MTg2MjA4R0YoSSRkaXZHNiRGJi9GM0kwX24yMDA5OTg2MTg2MTc2R0YoSSdqYWNvYmlHNiRGJi9GM0kwX24yMDA5OTg2MTg2MTQ0R0YoSSVjdXJsRzYkRiYvRjNJMF9uMjAwOTk4NjE4NjExMkdGKEklcGludEc2JEYmL0YzSTBfbjIwMDk5ODYxODYwODBHRihJJWZsdXhHNiRGJi9GM0kwX24yMDA5OTg2MTg2MDQ4R0YoSTBfbTIwMDk5ODYxODY0OTZHRihGKDcjRi4=</Equation></Text-field>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjNJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjE2NjIxNDIxMzI5OTJHRihJJXByaWtHNiRGJi9GM0kwX24xNjYyMTQyMTMyOTYwR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjE2NjIxNDIxMzI5MjhHRihJJmtyeWRzRzYkRiYvRjNJMF9uMTY2MjE0MjEzMjg5NkdGKEkkdm9wRzYkRiYvRjNJMF9uMTY2MjE0MjEzMjg2NEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjE2NjIxNDQ2MTcwMDBHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMTY2MjE0NDYxNjk2MEdGKEklZ3JhZEc2JEYmL0YzSTBfbjE2NjIxNDIxMzI4MzJHRihJJXNyaHNHNiRGJi9GM0kwX24xNjYyMTQyMTMyODAwR0YoSSVzbGhzRzYkRiYvRjNJMF9uMTY2MjE0MjEzMjc2OEdGKEkuY2hlY2tHcmFkaWVudEc2JEYmL0YzSTBfbjE2NjIxNDQ2MTY5MjBHRihJJXZsZW5HNiRGJi9GM0kwX24xNjYyMTQyMTMyNzM2R0YoSSRkaXZHNiRGJi9GM0kwX24xNjYyMTQyMTMyNzA0R0YoSSdqYWNvYmlHNiRGJi9GM0kwX24xNjYyMTQyMTMyNjcyR0YoSSVjdXJsRzYkRiYvRjNJMF9uMTY2MjE0MjEzMjY0MEdGKEklcGludEc2JEYmL0YzSTBfbjE2NjIxNDIxMzI2MDhHRihJJWZsdXhHNiRGJi9GM0kwX24xNjYyMTQyMTMyNTc2R0YoSTBfbTE2NjIxNDIxMzMwMjRHRig2I0k1Y29sdW1uTWF0cml4VG9WZWN0b3JHNiMvRjNJMF9uMTY2MjE0Mzc0NzcyOEdGKDcjRi4=</Equation></Text-field>
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">

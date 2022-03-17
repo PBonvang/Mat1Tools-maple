@@ -97,10 +97,8 @@
 </Input>
 <Output><Text-field style="Line Printed Output" layout="Line Printed Output">
 # Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and 
-# checks if it lives up to the mandatory criteria for being a gradient field.
-# I.e. 
-# checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;)
-# &gt; Condition satisfied.
+# checks if it lives up to the mandatory criteria for being a gradient field. 
+# checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;) -&gt; Condition satisfied.
 checkGradient( V, $ )
 
 </Text-field>
@@ -136,6 +134,10 @@ checkGradient( V, $ )
 </Input>
 <Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbXNHRiQ2I1E1Tm90fmdyYWRpZW50fmZpZWxkLn5GJy1JI21vR0YkNi1RKCZjb21tYTtGJy8lLG1hdGh2YXJpYW50R1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHUSV0cnVlRicvJSlzdHJldGNoeUdGOC8lKnN5bW1ldHJpY0dGOC8lKGxhcmdlb3BHRjgvJS5tb3ZhYmxlbGltaXRzR0Y4LyUnYWNjZW50R0Y4LyUnbHNwYWNlR1EmMC4wZW1GJy8lJ3JzcGFjZUdRLDAuMzMzMzMzM2VtRictRiM2Ji1GIzYmLUkmbWZyYWNHRiQ2KC1JJ21zdHlsZUdGJDYmLUYwNi9RKyZQYXJ0aWFsRDtGJy8lK2ZvcmVncm91bmRHUS5bMTQ0LDE0NCwxNDRdRidGMy9JK21zZW1hbnRpY3NHRiRRJmluZXJ0RidGNi9GOkY4RjxGPkZARkJGREZGL0ZKRkhGWS8lKXJlYWRvbmx5R0Y4RjMtRiM2JUZTLUkjbWlHRiQ2JVEieUYnLyUnaXRhbGljR0Y7L0Y0USdpdGFsaWNGJ0YzLyUubGluZXRoaWNrbmVzc0dRIjFGJy8lK2Rlbm9tYWxpZ25HUSdjZW50ZXJGJy8lKW51bWFsaWduR0ZccC8lKWJldmVsbGVkR0Y4LUknbXNwYWNlR0YkNiYvJSdoZWlnaHRHUSYwLjBleEYnLyUmd2lkdGhHUSYwLjRlbUYnLyUmZGVwdGhHRmZwLyUqbGluZWJyZWFrR1ElYXV0b0YnLUklbXN1YkdGJDYmLUZgbzYlUSJWRidGY29GZW8tRmBvNiVGaW9GY29GZW8vJS9zdWJzY3JpcHRzaGlmdEdRIjBGJy9GZ25RJ2F0b21pY0YnRjMtRjA2LVElJm5lO0YnRjNGNkZpbkY8Rj5GQEZCRkQvRkdRLDAuMjc3Nzc3OGVtRicvRkpGYHItRiM2Ji1GUTYoRlMtRiM2JUZTLUZgbzYlUSJ4RidGY29GZW9GM0Znb0Zqb0ZdcEZfcEZhcC1GYHE2JkZicS1GYG82JVEiMkYnRmNvRmVvRmdxRmpxRjNGM0Yz">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyRRNU5vdH5ncmFkaWVudH5maWVsZC5+RigwLUklRGlmZkdGJTYkSSVWX18xR0YoSSJ5R0YoLUYvNiRJJVZfXzJHRihJInhHRihGKw==</Equation></Text-field>
 </Output>
+</Group>
+<Group labelreference="L44" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
+</Input>
 </Group>
 </Section>
 </Worksheet>

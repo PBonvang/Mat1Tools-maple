@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Worksheet>
-<Version major="2021" minor="0"/>
+<Version major="2021" minor="2"/>
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
@@ -96,7 +96,7 @@
 <Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">Describe(Mat1Tools:-vlen)</Text-field>
 </Input>
 <Output><Text-field style="Line Printed Output" layout="Line Printed Output">
-# Computes the length of the given vector.
+# Computes the length of the given vector. I.e. vlen(&lt;x,y&gt;) -&gt; sqrt(x^2 + y^2)
 vlen( v::Vector )
 
 </Text-field>
