@@ -28,7 +28,7 @@ and the [Procedures](#procedures) will be available to you.
  - [vop](#vop)
  - [slhs](#slhs)
  - [srhs](#srhs)
- - [checkGradient](#checkgradient)
+ - [condgf](#condgf)
  - [vlen](#vlen)
  - [div](#div)
  - [jacobi](#jacobi)
@@ -182,8 +182,8 @@ srhs(<x=0,y=10,z=15>)
 ```
 For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 
-### checkGradient
-`checkGradient(V)`
+### condgf
+`condgf(V)`
 
 **Description:** Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory criteria for being a gradient field.
 
@@ -192,11 +192,11 @@ For more examples see the [showcase](Procedure%20showcases/srhs.mw).
 
 **Example:**
 ```
-checkGradient(<x, y>)
+condgf(<x, y>)
 > "Condition satisfied."
 ```
 
-For more examples see the [showcase](Procedure%20showcases/checkGradient.mw).
+For more examples see the [showcase](Procedure%20showcases/condgf.mw).
 
 ### vlen
 `vlen(v)`
