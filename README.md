@@ -32,7 +32,7 @@ and the [Procedures](#procedures) will be available to you.
  - [vlen](#vlen)
  - [div](#div)
  - [jacobi](#jacobi)
- - [curl](#curl)
+ - [curl / rot](#curl)
  - [pint](#pint)
  - [flux](#flux)
 ### paraplot
@@ -57,7 +57,7 @@ paraplot(r,intervals,color="#FF0004")
 For more examples see the [showcase](Procedure%20showcases/paraplot.mw).
 
 ### dot / prik
-`dot(x, y) / prik(x,y)`
+`dot(x, y) / prik(x, y)`
 
 **Parameters:**
 - `x: Vector`
@@ -253,7 +253,7 @@ jacobi(r);
 For more examples see the [showcase](Procedure%20showcases/jacobi.mw).
 
 ### curl
-`curl(V)`
+`curl(V) / rot(V)`
 
 **Description:** Creates a rotation procedure/function for the given vector field.
 
