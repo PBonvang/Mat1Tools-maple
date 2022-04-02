@@ -88,269 +88,33 @@
     <Task-category name="&lt;default&gt;"/>
 </Task-table>
 <Task/>
-<Group labelreference="L11" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">restart</Text-field>
+<Group labelreference="L1" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">with(Mat1Tools):</Text-field>
 </Input>
 </Group>
-<Group hide-input="false" labelreference="L1" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">Mat1Tools := module()
-description &quot;Tools used in the DTU course 01005 - Advanced Engineering Mathematics 1&quot;;
-option package;
-export 
-   dot, prik, cross, kryds, vop, intervalsolve, paraplot, grad, srhs, slhs, condgf, vlen, div, jacobi, curl, rot, pint, flux, vsolve;
-
-local columnMatrixToVector;
-
-with(LinearAlgebra):
-with(plots):
-with(Integrator8):
-
-
-columnMatrixToVector := proc(X)
-    if LinearAlgebra[ColumnDimension](X) = 1 and type(X, Matrix)  then
-        return convert(X,Vector):
-    else
-        return X:
-    end if;
-end proc:
-
-
-dot := proc(x::Vector,y::Vector) 
-    description &quot;Scalar product, dot product of two vectors; Takes two vectors and returns the dot product of them. dot(&lt;a,b&gt;,&lt;c,d&gt;)      -&gt; a*c + b*d&quot;:
-
-    return VectorCalculus[DotProduct](columnMatrixToVector(x),columnMatrixToVector(y)); 
-end proc:
-prik:= dot:
-
-
-cross := proc(x::Vector, y::Vector) 
-    description &quot;Cartesian product, cross product of two vectors. Takes two 3 dimensional vectors and returns the cross        
-    product/normal vector of them. cross(&lt;a,b,c&gt;,&lt;d,e,f&gt;) -&gt; &lt;b*f - c*e, -a*f + c*d, a*e - b*d]&gt;&quot;:
-
-    return convert(VectorCalculus[CrossProduct](columnMatrixToVector(x),columnMatrixToVector(y)),Vector);
-end proc:
-kryds := cross:
-
-
-vlen := proc(v::Vector) 
-    description &quot;Computes the length of the given vector. I.e. vlen(&lt;x,y&gt;) -&gt; sqrt(x^2 + y^2)&quot;:
-
-    return sqrt(dot(v, v));
-end proc:
-
-
-vop := proc(v) 
-    description &quot;Extract operands from a vector expression. I.e. vop(&lt;1,2,3&gt;) -&gt; 1,2,3&quot;;
-
-    return op(convert(v,list));
-end proc:
-
-
-intervalsolve := Student[Calculus1][Roots]:
-
-
-paraplot := proc(r::{procedure},range::{list(range)}) 
-    description &quot;Parametric plot (paraplot) is a function which plots parametric equations. Takes the parametric equation and a list      of ranges for the variables in the parametric equation.&quot;: 
-
-    local var,i; var:=op(1,eval(r)):
-    if (numelems(range)=1) then
-        if (numelems(r(var))=2) then
-            return plot([vop(r(var)),var=range[1]],_rest); # Kurve i 2D
-        else
-            return plot3d(r(var),var=range[1],_rest) # Kurve i 3D
-        end if:
-
-    elif (numelems(range)=2) then
-        if (numelems(r(var))=2) then
-            return plot3d(&lt;r(var),0&gt;,var[1]=range[1],var[2]=range[2],orientation=[-90,0],lightmodel=none,_rest); # Plan i 2D
-        else
-            return plot3d(r(var),var[1]=range[1],var[2]=range[2],_rest); # Flade i 3D
-        end if:
-
-    elif (numelems([var])=3) then
-        return plots[display](Integrator8[sideFlader](r,[seq(vop(convert(range[i],list)),i=1..3)],[8,8,8]),_rest);
-    end if;
-end proc:
-
-
-grad:= proc(f::{procedure},x::{list}) 
-    description &quot;Computes the gradient of the given function, with regard to the passed variables. I.e. grad(unapply(x+y,x,y),[x,y])      -&gt; &lt;1,1&gt;.&quot;:
-    return convert(VectorCalculus[Gradient](f(vop(x)),x),Vector[column]);
-end proc:
-
-
-srhs := proc(X, type:=whattype(X)) 
-    description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the right-hand side of the         equations. slhs([x=0,y=10,z=15]) -&gt; [0,10,15]&quot;:
-
-    local i, l:
-    l := convert(X, list):
-    return convert([seq(rhs(l[i]),i=1..numelems(l))],type);
-end proc:
-
-
-slhs := proc(X, type:=whattype(X)) 
-    description &quot;Takes a list, vector, column matrix, or similar containing only equations and returns the left-hand side of the          equations. slhs([x=0,y=10,z=15]) -&gt; [x,y,z]&quot;:
-
-    local i, l:
-    l := convert(X, list):
-    return convert([seq(lhs(l[i]),i=1..numelems(l))],type);
-end proc:
-
-
-condgf := proc(V, $)
-    description &quot;Takes a vector field in 2 or 3 dimensions as a list, vector, or similar and checks if it lives up to the mandatory       criteria for being a gradient field. checkGradient(&lt;y*cos(x*y), z+x*cos(x*y), y&gt;) -&gt; Condition satisfied.&quot;:
-
-    if numelems(V) &gt; 3 then
-        return &quot;The vectorfield must have a dimension of at most 3.&quot;;
-
-    elif numelems(V) &lt; 2 then
-        return &quot;The vectorfield must have a dimension of at least 2.&quot;;
-
-    elif numelems(V) = 2 then
-        if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) then 
-            return &quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x)
-        else 
-            return &quot;Condition satisfied.&quot;
-        end if;
-
-    else
-        if simplify(diff(V[1],y)) &lt;&gt; simplify(diff(V[2],x)) then 
-            return &quot;Not gradient field. &quot;, Diff(V__1,y) &lt;&gt; Diff(V__2,x)
-        elif simplify(diff(V[1],z)) &lt;&gt; simplify(diff(V[3],x)) then 
-            return &quot;Not gradient field. &quot;, Diff(V__1,z) &lt;&gt; Diff(V__3,x)
-        elif simplify(diff(V[2],z)) &lt;&gt; simplify(diff(V[3],y)) then 
-            return &quot;Not gradient field. &quot;, Diff(V__2,z) &lt;&gt; Diff(V__3,y)
-        else 
-            return &quot;Condition satisfied.&quot;
-        end if;
-    end if;
-end proc:
-
-
-div := proc(V::{Vector, procedure}) 
-    description &quot;Creates a procedure/function for the divergence of the passed vector field.&quot;:
-
-    local v;
-    if type(V, procedure) then 
-        v := V(op(1, eval(V))); 
-    else 
-        v := V; 
-    end if;
-
-    if numelems(v) = 2 then
-        VectorCalculus[SetCoordinates]('cartesian'[x,y]);
-        unapply(VectorCalculus[Divergence](VectorCalculus[VectorField](v)), [x, y]);
-    else
-        VectorCalculus[SetCoordinates]('cartesian'[x,y,z]);
-        unapply(VectorCalculus[Divergence](VectorCalculus[VectorField](v)), [x, y, z]);
-    end if;
-end proc:
-
-jacobi := proc(r::{procedure}) 
-    description &quot;Computes the jacobi function of a parametric equation variable of up to 3 variables&quot;:
-    
-    local i, var;
-    var := op(1, eval(r));
-    r := unapply(columnMatrixToVector(r(var)),var):
-
-    if numelems([var]) = 1 then
-        return simplify(vlen(diff(r(var), var))) assuming var::real;
-    elif numelems([var]) = 2 and numelems(r(var)) = 2 then
-        return simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real;
-    elif numelems([var]) = 2 then
-        return simplify(vlen(cross(diff(r(var), var[1]), diff(r(var), var[2])))) assuming var[1]::real, var[2]::real;
-    elif numelems([var]) = 3 then
-        return simplify(abs(VectorCalculus[Jacobian](r(var), [var], determinant)[2])) assuming var[1]::real, var[2]::real, var[3]::real;
-    else
-        return &quot;Incorrect number of dimensions&quot;;
-    end if;
-end proc:
-
-
-curl := proc(V::{Vector, procedure}) 
-    description &quot;Creates a rotation procedure/function for the given vector field.&quot;:
-
-    local v, var;
-    VectorCalculus:-BasisFormat(false);
-    if type(V, procedure) then
-        v := V(op(1, VectorCalculus:-eval(V)));
-        var := [op(1, VectorCalculus:-eval(V))];
-        return unapply(VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v)), var);
-    else
-        v := V;
-        return VectorCalculus:-Curl(Student[VectorCalculus][VectorCalculus:-VectorField](v));
-    end if;
-end proc:
-
-rot := curl:
-
-pint := proc(r::{procedure}, integrateRange::{list(range)}, f::{procedure} := 1) 
-    description &quot;Paramatric equation integration (pint) integrates the parametric equation given in the given intervals, optionally       with the provided weight function.&quot;:
-
-    local var, i;
-    var := [op(1, eval(r))];
-    return simplify(int(f(vop(r(vop(var))))*jacobi(r), seq(var[i] = integrateRange[i], i = 1 .. numelems(integrateRange))));
-end proc:
-
-
-flux:= proc(V::{procedure}, r::{procedure}, integrateRange::{list(range)}) 
-    description &quot;Computes the flux of the provided 3D vector field throughout the provided 2 variable parametric equation in the          given intervals.&quot;:
-    local var, i;
-    var := [op(1, eval(r))];
-    int(dot(convert(V(vop(r(vop(var)))), Vector), LinearAlgebra[CrossProduct](diff(r(vop(var)), var[1]), diff(r(vop(var)), var[2]))), var[1]=integrateRange[1], var[2]=integrateRange[2]);
-end proc:
-
-vsolve := proc(veq, vars)
-    description &quot;Solves the given vector equation for the variables defined in the second argument&quot;:
-    local i, s, l, r, subeq:
-    l := lhs(veq):
-    r := rhs(veq):
-    subeq := []:
-
-    if not numelems(l) = numelems(r) then
-        return &quot;Left and right side of equation must be of equal size&quot;;
-    end if;
-    
-    # Create sub equations
-    for i from 1 to numelems(l) do
-        subeq := [op(subeq),l[i] = r[i]]:
-    end do:
-
-    s := solve(subeq,vars):
-    if not s = NULL then
-        return s;
-    else
-        return &quot;No solutions found&quot;;
-    end if;
-end proc:
-
-end module;</Text-field>
+<Group labelreference="L15" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">Describe(Mat1Tools:-vsolve)</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjVJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjE2MzAwNDcwMjg4MzJHRihJJXByaWtHNiRGJi9GM0kwX24xNjMwMDQ3MDI4ODAwR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjE2MzAwNDcwMjg3NjhHRihJJmtyeWRzRzYkRiYvRjNJMF9uMTYzMDA0NzAyODczNkdGKEkkdm9wRzYkRiYvRjNJMF9uMTYzMDA0NzAyODcwNEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjE2MzAwNDczNDU0MzJHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMTYzMDA0NzM0NTM5MkdGKEklZ3JhZEc2JEYmL0YzSTBfbjE2MzAwNDcwMjg2NzJHRihJJXNyaHNHNiRGJi9GM0kwX24xNjMwMDQ3MDI4NjQwR0YoSSVzbGhzRzYkRiYvRjNJMF9uMTYzMDA0NzAyODYwOEdGKEknY29uZGdmRzYkRiYvRjNJMF9uMTYzMDA0NzAyODU3NkdGKEkldmxlbkc2JEYmL0YzSTBfbjE2MzAwNDcwMjg1NDRHRihJJGRpdkc2JEYmL0YzSTBfbjE2MzAwNDcwMjg1MTJHRihJJ2phY29iaUc2JEYmL0YzSTBfbjE2MzAwNDcwMjg0ODBHRihJJWN1cmxHNiRGJi9GM0kwX24xNjMwMDQ3MDI4NDQ4R0YoSSRyb3RHNiRGJi9GM0kwX24xNjMwMDQ3MDI4NDE2R0YoSSVwaW50RzYkRiYvRjNJMF9uMTYzMDA0NzAyODM4NEdGKEklZmx1eEc2JEYmL0YzSTBfbjE2MzAwNDcwMjgzNTJHRihJJ3Zzb2x2ZUc2JEYmL0YzSTBfbjE2MzAwNDcwMjgzMjBHRihJMF9tMTYzMDA0NzAyODg2NEdGKDYjSTVjb2x1bW5NYXRyaXhUb1ZlY3Rvckc2Iy9GM0kwX24xNjMwMDQ2OTQ5OTA0R0YoNyNGLg==</Equation></Text-field>
+<Output><Text-field style="Line Printed Output" layout="Line Printed Output">
+# Solves the given vector equation for the variables defined in the second 
+# argument
+vsolve( veq, vars )
+
+</Text-field>
 </Output>
 </Group>
-<Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">packageName := &quot;Mat1Tools.mla&quot;:</Text-field>
+<Section collapsed="false" isCollapsible="true" drawButton="true" MultipleChoiceAnswerIndex="-1" MultipleChoiceRandomizeChoices="false" TrueFalseAnswerIndex="-1" EssayAnswerRows="5" EssayAnswerColumns="60"><Title><Text-field style="Heading 1" layout="Heading 1">Example</Text-field></Title>
+<Group hide-input="false" labelreference="L21" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">veq := &lt;a+b, a - b&gt; = &lt;4, 10&gt;;</Text-field>
 </Input>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUkqbWNvbXBsZXRlRzYjL0krbW9kdWxlbmFtZUc2IkksVHlwZXNldHRpbmdHSShfc3lzbGliR0YnNiQtSSVtcm93R0YkNigtSSNtaUdGJDYlUSR2ZXFGJy8lJ2l0YWxpY0dRJXRydWVGJy8lLG1hdGh2YXJpYW50R1EnaXRhbGljRictSSNtb0dGJDYtUSkmQXNzaWduO0YnL0Y2USdub3JtYWxGJy8lJmZlbmNlR1EmZmFsc2VGJy8lKnNlcGFyYXRvckdGQC8lKXN0cmV0Y2h5R0ZALyUqc3ltbWV0cmljR0ZALyUobGFyZ2VvcEdGQC8lLm1vdmFibGVsaW1pdHNHRkAvJSdhY2NlbnRHRkAvJSdsc3BhY2VHUSwwLjI3Nzc3NzhlbUYnLyUncnNwYWNlR0ZPLUkobWZlbmNlZEdGJDYoLUYsNiYtSSdtdGFibGVHRiQ2OC1JJG10ckdGJDYoLUkkbXRkR0YkNiotRiw2Ji1GLzYlUSJhRidGMkY1LUY5Ni1RJyZwbHVzO0YnRjxGPkZBRkNGRUZHRklGSy9GTlEsMC4yMjIyMjIyZW1GJy9GUUZjby1GLzYlUSJiRidGMkY1RjwvJStmb3JlZ3JvdW5kR1EoWzAsMCwwXUYnLyUpcmVhZG9ubHlHRkAvJSlyb3dhbGlnbkdRIUYnLyUsY29sdW1uYWxpZ25HRl9wLyUrZ3JvdXBhbGlnbkdGX3AvJShyb3dzcGFuR1EiMUYnLyUrY29sdW1uc3BhbkdGZnBGaG9GW3BGXXBGYHBGYnAtRmVuNigtRmhuNiotRiw2JkZcby1GOTYtUSgmbWludXM7RidGPEY+RkFGQ0ZFRkdGSUZLRmJvRmRvRmVvRjxGaG9GW3BGXXBGYHBGYnBGZHBGZ3BGaG9GW3BGXXBGYHBGYnBGaG9GW3AvJSZhbGlnbkdRJWF4aXNGJy9GXnBRKWJhc2VsaW5lRicvRmFwUSdjZW50ZXJGJy9GY3BRJ3xmcmxlZnR8aHJGJy8lL2FsaWdubWVudHNjb3BlR0Y0LyUsY29sdW1ud2lkdGhHUSVhdXRvRicvJSZ3aWR0aEdGX3IvJStyb3dzcGFjaW5nR1EmMS4wZXhGJy8lLmNvbHVtbnNwYWNpbmdHUSYwLjhlbUYnLyUpcm93bGluZXNHUSVub25lRicvJSxjb2x1bW5saW5lc0dGanIvJSZmcmFtZUdGanIvJS1mcmFtZXNwYWNpbmdHUSwwLjRlbX4wLjVleEYnLyUqZXF1YWxyb3dzR0ZALyUtZXF1YWxjb2x1bW5zR0ZALyUtZGlzcGxheXN0eWxlR0ZALyUlc2lkZUdRJnJpZ2h0RicvJTBtaW5sYWJlbHNwYWNpbmdHRmdyRmhvRltwRjxGPC9JK21zZW1hbnRpY3NHRiRRKkNvbFZlY3RvckYnLyUlb3BlbkdRJyZsc3FiO0YnLyUmY2xvc2VHUScmcnNxYjtGJ0ZddC1GOTYtUSkmZXF1YWxzO0YnRjxGPkZBRkNGRUZHRklGS0ZNRlAtRlM2KC1GLDYmLUZYNjgtRmVuNigtRmhuNiotSSNtbkdGJDYkUSI0RidGPEZob0ZbcEZdcEZgcEZicEZkcEZncEZob0ZbcEZdcEZgcEZicC1GZW42KC1GaG42Ki1GZHU2JFEjMTBGJ0Y8RmhvRltwRl1wRmBwRmJwRmRwRmdwRmhvRltwRl1wRmBwRmJwRmhvRltwRmJxRmVxRmdxRmlxRltyRl1yRmByRmJyRmVyRmhyRltzRl1zRl9zRmJzRmRzRmZzRmhzRlt0RmhvRltwRjxGPEZddEZgdEZjdEZddEY8LUYsNigtRlM2JC1GUzYoLUYsNiYtRlg2OC1GZW42KC1GaG42Ki1GLDYoLUYvNidGXm9GMkZob0ZbcEY1LUY5Ni9RIitGJ0Zob0ZbcEY8Rj5GQUZDRkVGR0ZJRktGYm9GZG8tRi82J0Znb0YyRmhvRltwRjVGaG9GW3BGPEZob0ZbcEZdcEZgcEZicEZkcEZncEZob0ZbcEZdcEZgcEZicC1GZW42KC1GaG42Ki1GLDYoRl53LUY5Ni9GYXFGaG9GW3BGPEY+RkFGQ0ZFRkdGSUZLRmJvRmRvRmN3RmhvRltwRjxGaG9GW3BGXXBGYHBGYnBGZHBGZ3BGaG9GW3BGXXBGYHBGYnBGaG9GW3BGYnFGZXFGZ3FGaXFGW3JGXXJGYHJGYnJGZXJGaHJGW3NGXXNGX3NGYnNGZHNGZnNGaHNGW3RGaG9GW3BGPEZob0ZbcEY8L0ZhdFEiW0YnL0ZkdFEiXUYnRjwtRjk2LVEiPUYnRjxGPkZBRkNGRUZHRklGS0ZNRlAtRlM2JC1GUzYoLUYsNiYtRlg2OC1GZW42KC1GaG42Ki1GZHU2JkZmdUZob0ZbcEY8RmhvRltwRl1wRmBwRmJwRmRwRmdwRmhvRltwRl1wRmBwRmJwLUZlbjYoLUZobjYqLUZkdTYmRl12RmhvRltwRjxGaG9GW3BGXXBGYHBGYnBGZHBGZ3BGaG9GW3BGXXBGYHBGYnBGaG9GW3BGYnFGZXEvRmFwRmpzRmlxRltyRl1yRmByRmJyRmVyRmhyRltzRl1zRl9zRmJzRmRzRmZzRmhzRlt0RmhvRltwRjxGaG9GW3BGPEZdeEZfeEY8RmhvRltwRjw=">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSR2ZXFHRigvWCpJKWFueXRoaW5nR0YmRihGKFtnbCEjJSEhISIjIiMtSSVtcm93RzYkRiYvSSttb2R1bGVuYW1lR0YoRiQ2JS1JI21pR0YzNiNRImFGKC1JI21vR0YzNiNRJyZwbHVzO0YoLUY4NiNRImJGKC1GMjYlRjctRjw2I1EoJm1pbnVzO0YoRj8tSSdSVEFCTEVHRig2JSI1NyEpMykqZVYhXCQqbyQtSSdNQVRSSVhHRig2IzckNyMtSSNtbkdGMzYjUSI0Rig3Iy1GUTYjUSMxMEYoJkknVmVjdG9yR0YlNiNJJ2NvbHVtbkdGKDcjLy1GWDYjL0kkJWlkR0YoIjUjKnkzKSplViFcJCpvJC1GWDYjL0Zbb0ZK</Equation></Text-field>
+</Output>
 </Group>
-<Section collapsed="false" isCollapsible="true" drawButton="true" MultipleChoiceAnswerIndex="-1" MultipleChoiceRandomizeChoices="false" TrueFalseAnswerIndex="-1" EssayAnswerRows="5" EssayAnswerColumns="60"><Title><Text-field style="Heading 1" layout="Heading 1">maple/lib dir</Text-field></Title>
-<Group hide-input="false" labelreference="L8" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">savepath := FileTools:-JoinPath([&quot;lib&quot;,packageName],base=mapledir): # Maple/lib</Text-field>
+<Group hide-input="false" labelreference="L23" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">vsolve(veq,{a,b})</Text-field>
 </Input>
-</Group>
-</Section>
-<Section collapsed="false" isCollapsible="true" drawButton="true" MultipleChoiceAnswerIndex="-1" MultipleChoiceRandomizeChoices="false" TrueFalseAnswerIndex="-1" EssayAnswerRows="5" EssayAnswerColumns="60"><Title><Text-field style="Heading 1" layout="Heading 1">Current dir</Text-field></Title>
-<Group hide-input="false" labelreference="L9" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">savepath := cat(currentdir(),kernelopts(dirsep),packageName): # Current dir</Text-field>
-</Input>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUkobWZlbmNlZEc2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUklbXJvd0dGJDYoLUYsNiYtSSNtaUdGJDYlUSJhRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJmVxdWFscztGJy9GOFEnbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRkIvJSlzdHJldGNoeUdGQi8lKnN5bW1ldHJpY0dGQi8lKGxhcmdlb3BHRkIvJS5tb3ZhYmxlbGltaXRzR0ZCLyUnYWNjZW50R0ZCLyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGUS1JI21uR0YkNiRRIjdGJ0Y+Rj4tRjs2LVEiLEYnRj5GQC9GREY2RkVGR0ZJRktGTS9GUFEmMC4wZW1GJy9GU1EsMC4zMzMzMzMzZW1GJy1GLDYmLUYxNiVRImJGJ0Y0RjdGOi1GVTYkUSsmdW1pbnVzMDszRidGPkY+LyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0ZCRj5GPi8lJW9wZW5HUScmbGN1YjtGJy8lJmNsb3NlR1EnJnJjdWI7Ric=">PCQvSSJhRzYiIiIoL0kiYkdGJSEiJA==</Equation></Text-field>
+</Output>
 </Group>
 </Section>
-<Group labelreference="L3" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">savelib('Mat1Tools',savepath);</Text-field>
-</Input>
-</Group>
-<Group labelreference="L10" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
-</Input>
-</Group>
 </Worksheet>

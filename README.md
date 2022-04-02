@@ -35,6 +35,7 @@ and the [Procedures](#procedures) will be available to you.
  - [curl / rot](#curl)
  - [pint](#pint)
  - [flux](#flux)
+ - [vsolve](#vsolve)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -322,6 +323,25 @@ flux(V,r,intervals);
 ```
 
 For more examples see the [showcase](Procedure%20showcases/flux.mw).
+
+### vsolve
+`vsolve(veq, vars)`
+
+**Description:** Vector solve solves vector equations, where each side of the operand is a vector, for the specified variables
+
+**Parameters:**
+- `veq: Vector equation`
+- `vars: A list/set of variable names`
+
+**Example:**
+```
+veq := <a+b, a - b> = <4, 10>;
+
+vsolve(veq,{a,b});
+> {a = 7, b = -3}
+```
+
+For more examples see the [showcase](Procedure%20showcases/vsolve.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
