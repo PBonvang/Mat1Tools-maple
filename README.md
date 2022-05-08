@@ -341,7 +341,27 @@ vsolve(veq,{a,b});
 > {a = 7, b = -3}
 ```
 
-For more examples see the [showcase](Procedure%20showcases/vsolve.mw).
+### com
+`com(f, r, intervals)`
+
+**Description:** Determines the center of mass (COM) of the parameterized object defined by the the weight function f and the parametric equation r.
+
+**Parameters:**
+- `f: Weight function (Procedure/Function)`
+- `r: Parametric equation (Procedure/Function)`
+- `intervals: List of ranges`
+
+**Example:**
+```
+f := (x,y,z) -> 1;
+
+T := unapply(<u,(1-u)*v>,[u,v]):
+
+com(f,T,[0..1,0..1])
+> <1/3 | 1/3>
+```
+
+For more examples see the [showcase](Procedure%20showcases/com.mw).
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
