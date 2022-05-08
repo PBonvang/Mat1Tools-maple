@@ -36,6 +36,7 @@ and the [Procedures](#procedures) will be available to you.
  - [pint](#pint)
  - [flux](#flux)
  - [vsolve](#vsolve)
+ - [com](#com)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
