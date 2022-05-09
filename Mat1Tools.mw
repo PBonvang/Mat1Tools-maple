@@ -294,10 +294,20 @@ end proc:
 
 
 flux:= proc(V::{procedure}, r::{procedure}, integrateRange::{list(range)}) 
-    description &quot;Computes the flux of the provided 3D vector field throughout the provided 2 variable parametric equation in the          given intervals.&quot;:
+    description &quot;Computes the flux of the provided 3D vector field throughout the provided parameterized surface or solid object (assuming it's closed) in the given intervals.&quot;:
     local var, i;
-    var := [op(1, eval(r))];
-    int(dot(convert(V(vop(r(vop(var)))), Vector), LinearAlgebra[CrossProduct](diff(r(vop(var)), var[1]), diff(r(vop(var)), var[2]))), var[1]=integrateRange[1], var[2]=integrateRange[2]);
+
+    var := op(1, eval(r));
+    if numelems([var]) = 2 then:
+        return int(dot(convert(V(vop(r(var))), Vector), pnorm(r)), var[1]=integrateRange[1], var[2]=integrateRange[2]);
+    elif numelems([var]) = 3 then:
+        # Gauss divergence theorem
+        return int(
+            div(V)(vop(r(var)))*jacobi(r),
+            var[1]=integrateRange[1], var[2]=integrateRange[2], var[3]=integrateRange[3]);
+    else:
+        return &quot;Can only determine flux of surfaces. (Too many variables received)&quot;;
+    end if:
 end proc:
 
 vsolve := proc(veq, vars)
@@ -365,7 +375,7 @@ end proc:
 
 end module;</Text-field>
 </Input>
-<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjhJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjI2MDU5MTM2NDE5ODRHRihJJXByaWtHNiRGJi9GM0kwX24yNjA1OTEzNjQxOTUyR0YoSSZjcm9zc0c2JEYmL0YzSTBfbjI2MDU5MTM2NDE5MjBHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjYwNTkxMzY0MTg4OEdGKEkkdm9wRzYkRiYvRjNJMF9uMjYwNTkxMzY0MTg1NkdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjI2MDU5MTQzOTAwNzJHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjYwNTkxNDM5MDAzMkdGKEklZ3JhZEc2JEYmL0YzSTBfbjI2MDU5MTM2NDE4MjRHRihJJXNyaHNHNiRGJi9GM0kwX24yNjA1OTEzNjQxNzkyR0YoSSVzbGhzRzYkRiYvRjNJMF9uMjYwNTkxMzY0MTc2MEdGKEknY29uZGdmRzYkRiYvRjNJMF9uMjYwNTkxMzY0MTcyOEdGKEkldmxlbkc2JEYmL0YzSTBfbjI2MDU5MTM2NDE2OTZHRihJJGRpdkc2JEYmL0YzSTBfbjI2MDU5MTM2NDE2NjRHRihJJ2phY29iaUc2JEYmL0YzSTBfbjI2MDU5MTM2NDE2MzJHRihJJWN1cmxHNiRGJi9GM0kwX24yNjA1OTEzNjQxNjAwR0YoSSRyb3RHNiRGJi9GM0kwX24yNjA1OTEzNjQxNTY4R0YoSSVwaW50RzYkRiYvRjNJMF9uMjYwNTkxMzY0MTUzNkdGKEklZmx1eEc2JEYmL0YzSTBfbjI2MDU5MTM2NDE1MDRHRihJJ3Zzb2x2ZUc2JEYmL0YzSTBfbjI2MDU5MTM2NDE0NzJHRihJJXRpbnRHNiRGJi9GM0kwX24yNjA1OTEzNjQxNDQwR0YoSSRjb21HNiRGJi9GM0kwX24yNjA1OTEzNjQxNDA4R0YoSSZwbm9ybUc2JEYmL0YzSTBfbjI2MDU5MTM2NDEzNzZHRihJMF9tMjYwNTkxMzY0MjAxNkdGKDYjSTVjb2x1bW5NYXRyaXhUb1ZlY3Rvckc2Iy9GM0kwX24yNjA1OTEzMzEyNzM2R0YoNyNGLg==</Equation></Text-field>
+<Output><Text-field style="2D Output" layout="Maple Output"><Equation executable="false" style="2D Output" display="LUklbXJvd0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkdGJzYmLUkjbWlHRiQ2JVEqTWF0MVRvb2xzRicvJSdpdGFsaWNHUSV0cnVlRicvJSxtYXRodmFyaWFudEdRJ2l0YWxpY0YnLUkjbW9HRiQ2LVEpJkFzc2lnbjtGJy9GM1Enbm9ybWFsRicvJSZmZW5jZUdRJmZhbHNlRicvJSpzZXBhcmF0b3JHRj0vJSlzdHJldGNoeUdGPS8lKnN5bW1ldHJpY0dGPS8lKGxhcmdlb3BHRj0vJS5tb3ZhYmxlbGltaXRzR0Y9LyUnYWNjZW50R0Y9LyUnbHNwYWNlR1EsMC4yNzc3Nzc4ZW1GJy8lJ3JzcGFjZUdGTC1GIzYrLUY2Ni9RJ21vZHVsZUYnLyUlYm9sZEdGMS9GM1ElYm9sZEYnLyUrZm9udHdlaWdodEdGV0Y7Rj5GQEZCRkRGRkZIL0ZLUSYwLjBlbUYnL0ZORmVuLUkobWZlbmNlZEdGJDYkLUYjNiYtRiw2JVEhRidGL0YyLyUrZm9yZWdyb3VuZEdRKFswLDAsMF1GJy8lKXJlYWRvbmx5R0Y9RjlGOS1JJ21zcGFjZUdGJDYmLyUnaGVpZ2h0R1EmMC4wZXhGJy8lJndpZHRoR1EmMC41ZW1GJy8lJmRlcHRoR0Zpby8lKmxpbmVicmVha0dRMWZpcnN0cHJvY25ld2xpbmVGJy1GNjYtUSQuLi5GJ0Y5RjtGPkZARkJGREZGRkgvRktRLDAuMjIyMjIyMmVtRidGZm4tRmVvNiZGZ29Gam9GXXAvRmBwUTZkZWNyZWFzZWluZGVudG5ld2xpbmVGJy1GNjYvUStlbmR+bW9kdWxlRidGVEZWRlhGO0Y+RkBGQkZERkZGSEZaRmZuRl9vRmJvRjlGOQ==">LV9JLFR5cGVzZXR0aW5nRzYkJSpwcm90ZWN0ZWRHSShfc3lzbGliRzYiSSxtcHJpbnRzbGFzaEdGKDYkNyM+SSpNYXQxVG9vbHNHRihgNjhJJGRvdEc2JEYmL0knX2xvY2FsR0YmSTBfbjIzNTg2NzU5MzM0MDhHRihJJXByaWtHNiRGJi9GM0kwX24yMzU4Njc1OTMzMzc2R0YoSSZjcm9zc0c2JEYmL0YzSTBfbjIzNTg2NzU5MzMzNDRHRihJJmtyeWRzRzYkRiYvRjNJMF9uMjM1ODY3NTkzMzMxMkdGKEkkdm9wRzYkRiYvRjNJMF9uMjM1ODY3NTkzMzI4MEdGKEkuaW50ZXJ2YWxzb2x2ZUc2JEYmL0YzSTBfbjIzNTg2NzU5OTI1MjBHRihJKXBhcmFwbG90RzYkRiYvRjNJMF9uMjM1ODY3NTk5MjQ4MEdGKEklZ3JhZEc2JEYmL0YzSTBfbjIzNTg2NzU5MzMyNDhHRihJJXNyaHNHNiRGJi9GM0kwX24yMzU4Njc1OTMzMjE2R0YoSSVzbGhzRzYkRiYvRjNJMF9uMjM1ODY3NTkzMzE4NEdGKEknY29uZGdmRzYkRiYvRjNJMF9uMjM1ODY3NTkzMzE1MkdGKEkldmxlbkc2JEYmL0YzSTBfbjIzNTg2NzU5MzMxMjBHRihJJGRpdkc2JEYmL0YzSTBfbjIzNTg2NzU5MzMwODhHRihJJ2phY29iaUc2JEYmL0YzSTBfbjIzNTg2NzU5MzMwNTZHRihJJWN1cmxHNiRGJi9GM0kwX24yMzU4Njc1OTMzMDI0R0YoSSRyb3RHNiRGJi9GM0kwX24yMzU4Njc1OTMyOTkyR0YoSSVwaW50RzYkRiYvRjNJMF9uMjM1ODY3NTkzMjk2MEdGKEklZmx1eEc2JEYmL0YzSTBfbjIzNTg2NzU5MzI5MjhHRihJJ3Zzb2x2ZUc2JEYmL0YzSTBfbjIzNTg2NzU5MzI4OTZHRihJJXRpbnRHNiRGJi9GM0kwX24yMzU4Njc1OTMyODY0R0YoSSRjb21HNiRGJi9GM0kwX24yMzU4Njc1OTIwMzIwR0YoSSZwbm9ybUc2JEYmL0YzSTBfbjIzNTg2NzU5MjAzNTJHRihJMF9tMjM1ODY3NTkzMzQ0MEdGKDYjSTVjb2x1bW5NYXRyaXhUb1ZlY3Rvckc2Iy9GM0kwX24yMzU4Njc2NTIxNTg0R0YoNyNGLg==</Equation></Text-field>
 </Output>
 </Group>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
