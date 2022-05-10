@@ -37,6 +37,9 @@ and the [Procedures](#procedures) will be available to you.
  - [flux](#flux)
  - [vsolve](#vsolve)
  - [com](#com)
+ - hessian
+ - pnorm
+ - plotnorm
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -371,7 +374,7 @@ f := (x,y,z) -> 1;
 T := unapply(<u,(1-u)*v>,[u,v]):
 
 com(f,T,[0..1,0..1])
-> <1/3 | 1/3>
+> <1/3 , 1/3>
 ```
 
 For more examples see the [showcase](Procedure%20showcases/com.mw).
@@ -380,7 +383,8 @@ For more examples see the [showcase](Procedure%20showcases/com.mw).
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
 2. Change/Add procedures
 3. Add a show case to [Procedure showcases](Procedure%20showcases)
-4. Create pull request
+4. Add a function overview to [README.md](README.md)
+5. Create pull request
    1. Provide a proper description of the addition or modification, so that testers don't have to test everything (Unit tests pending).
 
 You'll of cause be able to use your own modification right away by replacing the existing *Mat1Tools.mla* file in your Maple lib folder (See [Installation](#installation))
