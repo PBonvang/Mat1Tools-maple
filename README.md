@@ -37,9 +37,10 @@ and the [Procedures](#procedures) will be available to you.
  - [flux](#flux)
  - [vsolve](#vsolve)
  - [com](#com)
- - hessian
- - pnorm
- - plotnorm
+ - [tint](#tint)
+ - [hessian](#hessian)
+ - [pnorm](#pnorm)
+ - [plotnorm](#plotnorm)
 ### paraplot
 `paraplot(r, intervals, plotOpts)`  
 
@@ -357,6 +358,8 @@ vsolve(veq,{a,b});
 > {a = 7, b = -3}
 ```
 
+For more examples see the [showcase](Procedure%20showcases/vsolve.mw).
+
 ### com
 `com(f, r, intervals)`
 
@@ -378,6 +381,85 @@ com(f,T,[0..1,0..1])
 ```
 
 For more examples see the [showcase](Procedure%20showcases/com.mw).
+
+### tint
+`tint(V, r, intervals)`
+
+**Description:** Determines the tangential line integral of a vector field V along a given line with the parametric equation r.
+
+**Parameters:**
+- `V: Vector field (Procedure/Function)`
+- `r: Parametric equation (Procedure/Function)`
+- `interval: Integrator range`
+
+**Example:**
+```
+V := (x,y) -> <-y,x>:
+
+r := u -> <cos(u), sin(u)>:
+
+interval := 0..2*Pi:
+
+tint(V,r,interval)
+> 2*Pi
+```
+
+For more examples see the [showcase](Procedure%20showcases/tint.mw).
+
+### hessian
+`hessian(f)`
+
+**Description:** Creates a procedure/function for the hessianmatrix of a given function.
+
+**Parameters:**
+- `f: Function (Procedure/Function)`
+
+**Example:**
+```
+f := (x,y) -> x^2 + y^2 + x*y:
+
+hessian(f)
+> <2, 1; 1, 2>
+```
+
+For more examples see the [showcase](Procedure%20showcases/hessian.mw).
+
+### pnorm
+`pnorm(r)`
+
+**Description:** Determines the normal vector of the parameterized surface given as r.
+
+**Parameters:**
+- `r: Parametric equation for surface (Procedure/Function)`
+
+**Example:**
+```
+r := (u,v) -> <cos(u), sin(u), v>:
+
+pnorm(r)
+> <cos(u), sin(u), 0>
+```
+
+For more examples see the [showcase](Procedure%20showcases/pnorm.mw).
+
+### plotnorm
+`plotnorm(f, limits)`
+
+**Description:** Plots the normal vector of the parameterized surface given as r.
+
+**Parameters:**
+- `r: Parametric equation for surface (Procedure/Function)`
+- `limits: List of ranges`
+
+**Example:**
+```
+r := (u,v) -> <cos(u), sin(u), v>:
+
+plotnorm(r, [0..2*Pi,0..2])
+```
+
+For more examples see the [showcase](Procedure%20showcases/plotnorm.mw).
+
 # Contribution
 
 1. Download the package source code: [Mat1Tools.mw](Mat1Tools.mw)
